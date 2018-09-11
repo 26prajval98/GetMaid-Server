@@ -6,9 +6,9 @@ import (
 	"time"
 )
 
-func HandlePath(msg string, handler func(http.ResponseWriter, *http.Request), middlewares ...func()) {
+func HandlePath(path string, handler func(http.ResponseWriter, *http.Request), middlewares ...func()) {
 
-	http.HandleFunc(msg, func(res http.ResponseWriter, req *http.Request) {
+	http.HandleFunc(path, func(res http.ResponseWriter, req *http.Request) {
 		startTime := time.Now()
 
 		for _, f := range middlewares {
@@ -19,6 +19,6 @@ func HandlePath(msg string, handler func(http.ResponseWriter, *http.Request), mi
 
 		elapsed := time.Since(startTime).String()
 
-		logger.Infolog(elapsed)
+		logger.Infolog(req.Method, path, elapsed)
 	})
 }

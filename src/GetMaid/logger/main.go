@@ -11,6 +11,6 @@ func init() {
 	Info = log.New(os.Stdout, "INFO:", log.Ldate|log.Ltime|log.Lshortfile)
 }
 
-func Infolog(y string) {
+func Infolog(y ...string) {
 	Info.Println(y)
 }
