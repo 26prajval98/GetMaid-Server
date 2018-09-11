@@ -1,14 +1,13 @@
 package main
 
 import (
-	"io"
+	"GetMaid/handlers"
+	"GetMaid/server"
 	"log"
 	"net/http"
 )
 
 func main() {
-	http.HandleFunc("/", func(resp http.ResponseWriter, req *http.Request) {
-		io.WriteString(resp, "Hello Go")
-	})
+	server.HandlePath("/", handlers.IndexHandler)
 	log.Fatal(http.ListenAndServe(":3000", nil))
 }
