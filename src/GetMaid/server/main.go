@@ -2,11 +2,22 @@ package server
 
 import (
 	"GetMaid/logger"
+	"io"
 	"net/http"
 	"time"
 )
 
-func HandlePath(path string, handler func(http.ResponseWriter, *http.Request), middlewares ...func()) {
+func errorHandler(err error, res http.ResponseWriter, info ...interface{}) bool {
+
+	if err != nil {
+		logger.WarnLog(err, info)
+		io.WriteString(res, "404 Page Not Found")
+		return true
+	}
+	return false
+}
+
+func HandlePath(path string, handler func(http.ResponseWriter, *http.Request) error, middlewares ...func()) {
 
 	http.HandleFunc(path, func(res http.ResponseWriter, req *http.Request) {
 		startTime := time.Now()
@@ -15,10 +26,12 @@ func HandlePath(path string, handler func(http.ResponseWriter, *http.Request), m
 			f()
 		}
 
-		handler(res, req)
+		err := handler(res, req)
 
 		elapsed := time.Since(startTime).String()
 
-		logger.Infolog(req.Method, path, elapsed)
+		if !errorHandler(err, res, req.Method, path) {
+			logger.InfoLog(req.Method, path, elapsed)
+		}
 	})
 }

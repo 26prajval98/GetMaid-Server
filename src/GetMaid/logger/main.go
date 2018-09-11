@@ -5,12 +5,20 @@ import (
 	"os"
 )
 
-var Info *log.Logger
+var (
+	Info *log.Logger
+	Warn *log.Logger
+)
 
 func init() {
-	Info = log.New(os.Stdout, "INFO:", log.Ldate|log.Ltime|log.Lshortfile)
+	Info = log.New(os.Stdout, "INFO :", log.Ldate|log.Ltime|log.Lshortfile)
+	Warn = log.New(os.Stderr, "ERR :", log.Ldate|log.Ltime|log.Lshortfile)
 }
 
-func Infolog(y ...string) {
+func InfoLog(y ...interface{}) {
 	Info.Println(y)
+}
+
+func WarnLog(y ...interface{}) {
+	Warn.Println(y)
 }
