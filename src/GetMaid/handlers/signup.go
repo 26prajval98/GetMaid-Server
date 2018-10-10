@@ -38,7 +38,7 @@ func SignupPostHandler(req *http.Request, res http.ResponseWriter) {
 
 	req.ParseForm()
 
-	if len(req.Form["email"][0]) == 0 || len(req.Form["password"]) == 0 {
+	if len(req.Form["email"]) == 0 || len(req.Form["password"]) == 0 {
 		panic("EMAIL OR PASSWORD MISSING")
 	}
 
