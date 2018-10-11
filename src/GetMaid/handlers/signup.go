@@ -50,7 +50,6 @@ func SignupPostHandler(req *http.Request, res http.ResponseWriter) {
 
 	fmt.Println(hpw)
 
-
 }
 
 func SignupHandler(res http.ResponseWriter, req *http.Request) error {
@@ -68,8 +67,6 @@ func SignupHandler(res http.ResponseWriter, req *http.Request) error {
 	default:
 		panic(404)
 	}
-
-
 
 	return e
 }
