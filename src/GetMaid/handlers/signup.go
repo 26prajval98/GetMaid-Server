@@ -27,14 +27,14 @@ type Address struct {
 
 func SignupGetHandler(res http.ResponseWriter) {
 	io.WriteString(res, "Signup Route")
-	wg.Done()
+
 }
 
 func SignupPostHandler(req *http.Request, res http.ResponseWriter) {
 
 	var e error
 
-	defer methods.ErrorHandler(res, &e, &wg)
+	defer methods.ErrorHandler(res, &e)
 
 	req.ParseForm()
 
@@ -50,7 +50,7 @@ func SignupPostHandler(req *http.Request, res http.ResponseWriter) {
 
 	fmt.Println(hpw)
 
-	wg.Done()
+
 }
 
 func SignupHandler(res http.ResponseWriter, req *http.Request) error {
@@ -60,16 +60,16 @@ func SignupHandler(res http.ResponseWriter, req *http.Request) error {
 
 	switch {
 	case methods.CheckCase("GET", "/signup", req):
-		wg.Add(1)
-		go SignupGetHandler(res)
+		SignupGetHandler(res)
+
 	case methods.CheckCase("POST", "/signup", req):
-		wg.Add(1)
-		go SignupPostHandler(req, res)
+
+		SignupPostHandler(req, res)
 	default:
 		panic(404)
 	}
 
-	wg.Wait()
+
 
 	return e
 }

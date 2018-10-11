@@ -16,3 +16,4 @@ func main() {
 	fmt.Println("Starting Server")
 	log.Fatal(http.ListenAndServe(":3000", nil))
 }
+

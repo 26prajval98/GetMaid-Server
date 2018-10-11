@@ -4,14 +4,14 @@ import (
 	"GetMaid/handlers/methods"
 	"io"
 	"net/http"
-	"sync"
+
 )
 
-var wg sync.WaitGroup
+
 
 func indexGetHandler(res http.ResponseWriter) {
 	io.WriteString(res, "Welcome to GetMaid")
-	wg.Done()
+
 }
 
 func IndexHandler(res http.ResponseWriter, req *http.Request) error {
@@ -22,12 +22,10 @@ func IndexHandler(res http.ResponseWriter, req *http.Request) error {
 
 	switch {
 	case methods.CheckCase("GET", "/", req):
-		wg.Add(1)
-		go indexGetHandler(res)
+		 indexGetHandler(res)
 	default:
 		panic(404)
 	}
-	wg.Wait()
 
 	return nil
 }
