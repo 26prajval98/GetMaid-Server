@@ -6,9 +6,10 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"sync"
 )
 
-func ErrorHandler(res http.ResponseWriter, err *error) {
+func ErrorHandler(res http.ResponseWriter, err *error, wg ...*sync.WaitGroup) {
 
 	*err = nil
 
@@ -44,14 +45,15 @@ func ErrorHandler(res http.ResponseWriter, err *error) {
 			res.WriteHeader(500)
 		}
 
-		//fmt.Println(code)
-
 		*err = errors.New(msg)
 
 		res.WriteHeader(code)
 		res.Header().Set("Content-Type", "application/json")
 		res.Write(s)
 
+		if len(wg) > 0 {
+			wg[0].Done()
+		}
 
 	}
 }
