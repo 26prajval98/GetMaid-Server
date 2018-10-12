@@ -1,7 +1,8 @@
 package main
 
 import (
-	"GetMaid/handlers"
+	"GetMaid/handlers/index"
+	"GetMaid/handlers/signup"
 	"GetMaid/server"
 	"fmt"
 	"log"
@@ -10,9 +11,8 @@ import (
 
 func main() {
 
-	server.HandlePath("/", handlers.IndexHandler)
-
-	server.HandlePath("/signup", handlers.SignupHandler)
+	server.HandlePath("/", index.Handler)
+	server.HandlePath("/signup", signup.Handler)
 
 	fmt.Println("Starting Server")
 	log.Fatal(http.ListenAndServe(":3000", nil))
