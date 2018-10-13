@@ -17,18 +17,18 @@ func post(req *http.Request, res http.ResponseWriter) {
 
 	req.ParseForm()
 
+	hpw, e := bcrypt.GenerateFromPassword([]byte(req.Form.Get("Password")), 6)
+
+	if e != nil {
+		panic(500)
+	}
+
 	if len(req.Form.Get("Password")) < 10 {
 		panic("Minimum length of password is 10 letters")
 	}
 
 	if req.Form.Get("Password") != req.Form.Get("Repassword") {
 		panic(PASSWORD)
-	}
-
-	hpw, e := bcrypt.GenerateFromPassword([]byte(req.Form.Get("Password")), 6)
-
-	if e != nil {
-		panic(500)
 	}
 
 	if t, _ := strconv.Atoi(req.Form.Get("IsMaid")); t == int(0) {
