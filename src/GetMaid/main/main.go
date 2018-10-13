@@ -14,6 +14,7 @@ func main() {
 
 	server.HandlePath("/signup", handlers.SignupHandler)
 
+	server.HandlePath("/login",handlers.LoginHandler)
 	fmt.Println("Starting Server")
 	log.Fatal(http.ListenAndServe(":3000", nil))
 }

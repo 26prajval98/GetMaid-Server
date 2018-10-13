@@ -3,13 +3,26 @@ package handlers
 import (
 	"GetMaid/handlers/methods"
 	"database/sql"
+	"github.com/qor/auth"
+	//"github.com/qor/auth/auth_identity"
+	"github.com/qor/auth/providers/facebook"
+	"github.com/qor/auth/providers/google"
 	"golang.org/x/crypto/bcrypt"
 	"io"
 	"net/http"
 )
 
-var db *sql.DB
+//var db *sql.DB
+var (
 
+	// Initialize SQL DB
+	sqlDB, _ = sql.Open("mysql","getmaid.db")
+
+	// Initialize Auth with configuration
+	Auth = auth.New(&auth.Config{
+		DB: sqlDB,
+	})
+)
 
 func LoginGetHandler(res http.ResponseWriter){
 	io.WriteString(res, "Login Route")
@@ -26,7 +39,7 @@ func LoginPostHandler(req *http.Request,res http.ResponseWriter){
 	var databaseUsername string
 	var databasePassword string
 
-	err := db.QueryRow("SELECT username, password FROM users WHERE username=?", username).Scan(&databaseUsername, &databasePassword)
+	err := sqlDB.QueryRow("SELECT username, password FROM hirer WHERE username=?", username).Scan(&databaseUsername, &databasePassword)
 
 	if err != nil {
 		http.Redirect(res, req, "/login", 301)
@@ -38,11 +51,25 @@ func LoginPostHandler(req *http.Request,res http.ResponseWriter){
 		http.Redirect(res, req, "/login", 301)
 		return
 	}
+	if err==nil{
+		io.WriteString(res,"Hello "+databaseUsername)
+	}
 
-	io.WriteString(res,"Hello "+databaseUsername)
+	//// Migrate AuthIdentity model, AuthIdentity will be used to save auth info, like username/password, oauth token, you could change that.
+	//sqlDB.AutoMigrate(&auth_identity.AuthIdentity{})
 
-	//Facebook oauth
 
+	// 2.Allow use Google
+	Auth.RegisterProvider(google.New(&google.Config{
+		ClientID:     "google client id",
+		ClientSecret: "google client secret",
+	}))
+
+	// 2.Allow use Facebook
+	Auth.RegisterProvider(facebook.New(&facebook.Config{
+		ClientID:     "facebook client id",
+		ClientSecret: "facebook client secret",
+	}))
 
 
 
@@ -66,15 +93,4 @@ func LoginHandler(res http.ResponseWriter, req *http.Request) error {
 
 	return e
 }
-//func Login(w http.ResponseWriter, r *http.Request) {
-//	fmt.Println("method:", r.Method) //get request method
-//	if r.Method == "GET" {
-//		t, _ := template.ParseFiles("login.gtpl")
-//		t.Execute(w, nil)
-//	} else {
-//		r.ParseForm()
-//		// logic part of log in
-//		fmt.Println("username:", r.Form["username"])
-//		fmt.Println("password:", r.Form["password"])
-//	}
-//}
+
