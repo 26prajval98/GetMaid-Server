@@ -12,6 +12,7 @@ import (
 func post(req *http.Request, res http.ResponseWriter) {
 
 	var e error
+	var flag d
 
 	defer methods.ErrorHandler(res, &e)
 
@@ -45,6 +46,7 @@ func post(req *http.Request, res http.ResponseWriter) {
 			},
 		}
 		validateSignup(user)
+		flag = insertHirer(user)
 	} else {
 		user := Maid{
 			Email:    req.Form.Get("Email"),
@@ -58,9 +60,16 @@ func post(req *http.Request, res http.ResponseWriter) {
 			},
 		}
 		validateSignup(user)
+		flag = insertMaid(user)
 	}
 
-	success, err := json.Marshal(types.Success{Success: true, Msg: strconv.Itoa(NOERROR)})
-	methods.CheckErr(err)
-	methods.SendJSONResponse(res, success, 200)
+	if !flag.error {
+		success, err := json.Marshal(types.Success{Success: true, Msg: strconv.Itoa(NOERROR)})
+		methods.CheckErr(err)
+		methods.SendJSONResponse(res, success, 200)
+	} else {
+		success, err := json.Marshal(types.Success{Success: false, Msg: flag.e.Error()})
+		methods.CheckErr(err)
+		methods.SendJSONResponse(res, success, 500)
+	}
 }

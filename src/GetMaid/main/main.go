@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GetMaid/database"
 	"GetMaid/handlers/index"
 	"GetMaid/handlers/signup"
 	"GetMaid/server"
@@ -11,6 +12,7 @@ import (
 
 func main() {
 
+	defer database.CloseDb()
 	server.HandlePath("/", index.Handler)
 	server.HandlePath("/signup", signup.Handler)
 
