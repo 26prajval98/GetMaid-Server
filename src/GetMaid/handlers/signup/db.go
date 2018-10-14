@@ -23,6 +23,8 @@ func init() {
 	var e error
 	db := database.GetDb()
 
+	createTables(db)
+
 	//noinspection SqlResolve
 	maidInsert, e = db.Prepare(`INSERT INTO maid(Name, Email, Phone, AddressId, PASSWORD) VALUES ( ?, ?, ?, ?, ?)`)
 	methods.CheckErr(e)
@@ -78,13 +80,20 @@ func insertMaid(user Maid) d {
 
 		var id int64
 		var er error
+		var email interface{}
 		t := <-r
 		id, er = t.LastInsertId()
 		if er != nil {
 			done <- d{true, er}
 			panic(er.Error())
 		}
-		_, er = maidInsert.Exec(user.Name, user.Email, user.Phone, id, user.Password)
+
+		if user.Email == "" {
+			email = nil
+		} else {
+			email = user.Email
+		}
+		_, er = maidInsert.Exec(user.Name, email, user.Phone, id, user.Password)
 		if er != nil {
 
 			addressDelete.Exec(id)

@@ -10,9 +10,12 @@ func validateSignup(x interface{}) {
 	var err error
 	switch t := x.(type) {
 	case Maid:
-		if check, err = regexp.MatchString(`^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$`, t.Email); err == nil && !check {
-			panic(EMAIL)
-		} else if len(t.Name) == 0 {
+		if check, err = regexp.MatchString(`^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$`, t.Email); err == nil && (!check) {
+			if !(t.Email == "") {
+				panic(EMAIL)
+			}
+		}
+		if len(t.Name) == 0 {
 			panic(NAME)
 		} else if check, err = regexp.MatchString(`([1-9][0-9]+)`, t.Phone); len(t.Phone) != 10 && !check {
 			panic(PHONE)

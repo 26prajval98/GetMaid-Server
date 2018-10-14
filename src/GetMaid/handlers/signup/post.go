@@ -70,6 +70,6 @@ func post(req *http.Request, res http.ResponseWriter) {
 	} else {
 		success, err := json.Marshal(types.Success{Success: false, Msg: flag.e.Error()})
 		methods.CheckErr(err)
-		methods.SendJSONResponse(res, success, 500)
+		methods.SendJSONResponse(res, success, 400)
 	}
 }
