@@ -21,3 +21,7 @@ func init() {
 func GetDb() *sql.DB {
 	return DB
 }
+
+func CloseDb() {
+	DB.Close()
+}

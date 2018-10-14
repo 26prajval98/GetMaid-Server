@@ -4,6 +4,8 @@ import (
 	"GetMaid/handlers/methods"
 	"database/sql"
 	"github.com/qor/auth"
+	"github.com/qor/auth/auth_identity"
+
 	//"github.com/qor/auth/auth_identity"
 	"github.com/qor/auth/providers/facebook"
 	"github.com/qor/auth/providers/google"
@@ -12,7 +14,7 @@ import (
 	"net/http"
 )
 
-//var db *sql.DB
+var db *sql.DB
 var (
 
 	// Initialize SQL DB
@@ -55,8 +57,8 @@ func LoginPostHandler(req *http.Request,res http.ResponseWriter){
 		io.WriteString(res,"Hello "+databaseUsername)
 	}
 
-	//// Migrate AuthIdentity model, AuthIdentity will be used to save auth info, like username/password, oauth token, you could change that.
-	//sqlDB.AutoMigrate(&auth_identity.AuthIdentity{})
+	// Migrate AuthIdentity model, AuthIdentity will be used to save auth info, like username/password, oauth token, you could change that.
+	sqlDB.AutoMigrate(&auth_identity.AuthIdentity{})
 
 
 	// 2.Allow use Google

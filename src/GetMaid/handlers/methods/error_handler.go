@@ -35,6 +35,19 @@ func ErrorHandler(res http.ResponseWriter, err *error, wg ...*sync.WaitGroup) {
 
 			case string:
 				msg = x
+			case int:
+				switch x {
+				case 1:
+					msg = "Passwords Do Not Match"
+				case 2:
+					msg = "Invalid Email"
+				case 3:
+					msg = "Invalid Phone Number"
+				case 4:
+					msg = "Invalid Name"
+				case 5:
+					msg = "Invalid Address"
+				}
 			}
 		}
 
@@ -47,9 +60,7 @@ func ErrorHandler(res http.ResponseWriter, err *error, wg ...*sync.WaitGroup) {
 
 		*err = errors.New(msg)
 
-		res.WriteHeader(code)
-		res.Header().Set("Content-Type", "application/json")
-		res.Write(s)
+		SendJSONResponse(res, s, code)
 
 		if len(wg) > 0 {
 			wg[0].Done()
