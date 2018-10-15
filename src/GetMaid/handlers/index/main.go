@@ -1,20 +1,16 @@
-package handlers
+package index
 
 import (
 	"GetMaid/handlers/methods"
 	"io"
 	"net/http"
-
 )
 
-
-
-func indexGetHandler(res http.ResponseWriter) {
+func get(res http.ResponseWriter) {
 	io.WriteString(res, "Welcome to GetMaid")
-
 }
 
-func IndexHandler(res http.ResponseWriter, req *http.Request) error {
+func Handler(res http.ResponseWriter, req *http.Request) error {
 
 	var e error
 
@@ -22,7 +18,7 @@ func IndexHandler(res http.ResponseWriter, req *http.Request) error {
 
 	switch {
 	case methods.CheckCase("GET", "/", req):
-		 indexGetHandler(res)
+		get(res)
 	default:
 		panic(404)
 	}

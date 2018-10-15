@@ -16,7 +16,6 @@ func init() {
 
 	DB = db
 }
-
 func GetDb() *sql.DB {
 	return DB
 }
