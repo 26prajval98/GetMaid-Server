@@ -4,6 +4,7 @@ import (
 	"GetMaid/database"
 	"GetMaid/handlers/index"
 	"GetMaid/handlers/signup"
+	"GetMaid/handlers/login"
 	"GetMaid/server"
 	"fmt"
 	"log"
