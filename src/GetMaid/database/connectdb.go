@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	"github.com/go-sql-driver/mysql"
 	"log"
 )
 
@@ -20,4 +19,8 @@ func init() {
 
 func GetDb() *sql.DB {
 	return DB
+}
+
+func CloseDb() {
+	DB.Close()
 }

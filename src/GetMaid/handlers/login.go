@@ -16,7 +16,7 @@ import (
 var (
 
 	// Initialize SQL DB
-	sqlDB, _ = sql.Open("mysql","getmaid.db")
+	sqlDB, _ = sql.Open("mysql","root@tcp(127.0.0.1:3306)/getmaid")
 
 	// Initialize Auth with configuration
 	Auth = auth.New(&auth.Config{
