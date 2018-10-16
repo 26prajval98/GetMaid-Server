@@ -22,4 +22,3 @@ pkg
 github.com
 golang.org
 cloud.google.com
-src/GetMaid/handlers/login/googlelogin
