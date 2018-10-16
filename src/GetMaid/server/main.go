@@ -17,16 +17,24 @@ func errorHandler(err error, res http.ResponseWriter, info ...interface{}) bool 
 	return false
 }
 
-func HandlePath(path string, handler func(http.ResponseWriter, *http.Request) error, middlewares ...func()) {
+func HandlePath(path string, handler func(http.ResponseWriter, *http.Request) error, middlewares ...func(http.ResponseWriter, *http.Request) bool) {
 
 	http.HandleFunc(path, func(res http.ResponseWriter, req *http.Request) {
 		startTime := time.Now()
 
-		for _, f := range middlewares {
-			f()
-		}
+		var err error
 
-		err := handler(res, req)
+		func() {
+			for _, f := range middlewares {
+				next := f(res, req)
+
+				if !next {
+					return
+				}
+			}
+
+			err = handler(res, req)
+		}()
 
 		elapsed := time.Since(startTime).String()
 

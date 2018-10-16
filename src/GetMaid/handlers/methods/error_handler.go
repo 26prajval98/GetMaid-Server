@@ -47,6 +47,8 @@ func ErrorHandler(res http.ResponseWriter, err *error, wg ...*sync.WaitGroup) {
 					msg = "Invalid Name"
 				case 5:
 					msg = "Invalid Address"
+				case 6:
+					msg = "Incorrect Email Or Passowrd"
 				}
 			}
 		}

@@ -24,4 +24,7 @@ go get golang.org/x/oauth2
 echo 6
 go get github.com/dchest/uniuri
 
+echo 7
+go get -u github.com/gbrlsnchs/jwt/v2
+
 echo "All dependencies set";

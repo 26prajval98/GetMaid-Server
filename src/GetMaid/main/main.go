@@ -2,8 +2,9 @@ package main
 
 import (
 	"GetMaid/database"
+	"GetMaid/handlers/authentication/jwt"
+	"GetMaid/handlers/authentication/local"
 	"GetMaid/handlers/index"
-	"GetMaid/handlers/login/local"
 	"GetMaid/handlers/signup"
 	"GetMaid/server"
 	"fmt"
@@ -14,7 +15,7 @@ import (
 func main() {
 
 	defer database.CloseDb()
-	server.HandlePath("/", index.Handler)
+	server.HandlePath("/", index.Handler, jwt.VerifyJWT)
 	server.HandlePath("/signup", signup.Handler)
 	server.HandlePath("/login", local.Handler)
 
