@@ -1,13 +1,11 @@
-package dblogin
-
-
+package local
 
 import (
 	"GetMaid/handlers/methods"
 	"net/http"
 )
 
-const NOERROR  = iota
+const NOERROR = iota
 
 func Handler(res http.ResponseWriter, req *http.Request) error {
 	var e error

@@ -1,4 +1,4 @@
-package dblogin
+package local
 
 import (
 	"GetMaid/database"
