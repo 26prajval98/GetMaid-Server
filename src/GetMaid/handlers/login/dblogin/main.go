@@ -10,7 +10,7 @@ import (
 const (
 	NOERROR  = iota
 	PASSWORD = iota
-	
+
 )
 
 func Handler(res http.ResponseWriter, req *http.Request) error {

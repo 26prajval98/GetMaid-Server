@@ -1,13 +1,12 @@
 package dblogin
 
 import (
+	"GetMaid/database"
 	"GetMaid/handlers/methods"
 	"GetMaid/handlers/types"
-	"database/sql"
 	"encoding/json"
 	"golang.org/x/crypto/bcrypt"
 	"io"
-	"log"
 	"net/http"
 	"strconv"
 )
@@ -15,23 +14,22 @@ import (
 
 func post(req *http.Request,res http.ResponseWriter){
 
+	var databaseEmail string
+	var databasePassword string
+
 	// 1.Username and password
 	var err error
 	defer methods.ErrorHandler(res, &err)
 
 
-	username:=req.FormValue("username")
-	password:=req.FormValue("password")
+	email:=req.FormValue("Email")
+	password:=req.FormValue("Password")
 
-	var databaseUsername string
-	var databasePassword string
 
-	db, e := sql.Open("mysql", "root:namah1998@tcp(127.0.0.1:3306)/getmaid")
-	if e != nil {
-		log.Fatal("Database Not Connected")
-	}
+	db := database.GetDb()
+	
 
-	err = db.QueryRow("SELECT Name,Password FROM hirer WHERE Name=?", username).Scan(&databaseUsername, &databasePassword)
+	err = db.QueryRow("SELECT Name,Password FROM hirer WHERE Name=?", email).Scan(&databaseEmail, &databasePassword)
 
 	if err != nil {
 		http.Redirect(res, req, "/login", 301)
@@ -51,7 +49,7 @@ func post(req *http.Request,res http.ResponseWriter){
 
 
 	if err==nil{
-		io.WriteString(res,"Hello "+databaseUsername)
+		io.WriteString(res,"Hello "+databaseEmail)
 		success, err := json.Marshal(types.Success{Success: true, Msg: strconv.Itoa(NOERROR)})
 		methods.CheckErr(err)
 		methods.SendJSONResponse(res, success, 200)
