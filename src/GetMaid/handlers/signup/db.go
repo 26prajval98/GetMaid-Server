@@ -98,7 +98,7 @@ func insertMaid(user Maid) d {
 
 			addressDelete.Exec(id)
 
-			done <- d{true, errors.New("duplicate email")}
+			done <- d{true, errors.New("email / phone already exists")}
 		}
 		done <- d{false, nil}
 	}()
@@ -160,7 +160,7 @@ func insertHirer(user Hirer) d {
 
 			addressDelete.Exec(id)
 
-			done <- d{true, errors.New("duplicate email")}
+			done <- d{true, errors.New("email / phone already exists")}
 		}
 		done <- d{false, nil}
 	}()
