@@ -21,4 +21,7 @@ go get cloud.google.com/go/compute/metadata
 echo 5
 go get golang.org/x/oauth2
 
+echo 6
+go get github.com/dchest/uniuri
+
 echo "All dependencies set";
