@@ -8,6 +8,7 @@ import (
 )
 
 const NOERROR  = iota
+
 func Handler(res http.ResponseWriter, req *http.Request) error {
 	var e error
 
