@@ -18,4 +18,7 @@ go get golang.org/x/oauth2
 echo 4
 go get cloud.google.com/go/compute/metadata
 
+echo 5
+go get golang.org/x/oauth2
+
 echo "All dependencies set";

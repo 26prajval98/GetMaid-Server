@@ -1,4 +1,4 @@
-package login
+package dblogin
 
 
 
@@ -10,10 +10,7 @@ import (
 const (
 	NOERROR  = iota
 	PASSWORD = iota
-	EMAIL    = iota
-	PHONE    = iota
-	NAME     = iota
-	ADDRESS
+	
 )
 
 func Handler(res http.ResponseWriter, req *http.Request) error {

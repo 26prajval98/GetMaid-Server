@@ -1,4 +1,4 @@
-package login
+package dblogin
 
 import (
 	"GetMaid/handlers/methods"
@@ -26,7 +26,7 @@ func post(req *http.Request,res http.ResponseWriter){
 	var databaseUsername string
 	var databasePassword string
 
-	db, e := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/getmaid")
+	db, e := sql.Open("mysql", "root:namah1998@tcp(127.0.0.1:3306)/getmaid")
 	if e != nil {
 		log.Fatal("Database Not Connected")
 	}
