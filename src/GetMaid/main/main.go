@@ -3,9 +3,9 @@ package main
 import (
 	"GetMaid/database"
 	"GetMaid/handlers/index"
+	"GetMaid/handlers/login/dblogin"
 	"GetMaid/handlers/login/googlelogin"
 	"GetMaid/handlers/signup"
-	"GetMaid/handlers/login/dblogin"
 	"GetMaid/server"
 	"fmt"
 	"log"
