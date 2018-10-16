@@ -11,8 +11,7 @@ import (
 	"strconv"
 )
 
-
-func post(req *http.Request,res http.ResponseWriter){
+func post(req *http.Request, res http.ResponseWriter) {
 
 	var databaseEmail string
 	var databasePassword string
@@ -21,15 +20,12 @@ func post(req *http.Request,res http.ResponseWriter){
 	var err error
 	defer methods.ErrorHandler(res, &err)
 
-
-	email:=req.FormValue("Email")
-	password:=req.FormValue("Password")
-
+	email := req.FormValue("Email")
+	password := req.FormValue("Password")
 
 	db := database.GetDb()
 
-
-	err = db.QueryRow("SELECT Name,Password FROM hirer WHERE Name=?", email).Scan(&databaseEmail, &databasePassword)
+	err = db.QueryRow("SELECT Password FROM hirer WHERE Name=?", email).Scan(&databasePassword)
 
 	if err != nil {
 		http.Redirect(res, req, "/login", 301)
@@ -47,17 +43,11 @@ func post(req *http.Request,res http.ResponseWriter){
 		return
 	}
 
-
-	if err==nil{
-		io.WriteString(res,"Hello "+databaseEmail)
+	if err == nil {
+		io.WriteString(res, "Hello "+databaseEmail)
 		success, err := json.Marshal(types.Success{Success: true, Msg: strconv.Itoa(NOERROR)})
 		methods.CheckErr(err)
 		methods.SendJSONResponse(res, success, 200)
 	}
-
-
-
-
-
 
 }
