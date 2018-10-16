@@ -25,6 +25,6 @@ echo 6
 go get github.com/dchest/uniuri
 
 echo 7
-go get -u github.com/gbrlsnchs/jwt/v2
+go get -u github.com/gbrlsnchs/jwt
 
 echo "All dependencies set";
