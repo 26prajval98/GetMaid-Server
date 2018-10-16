@@ -9,20 +9,20 @@ import (
 	"net/http"
 )
 
-func CallbackHandler(w http.ResponseWriter, r *http.Request)error{
-	code := r.FormValue("code")
+func CallbackHandler(res http.ResponseWriter, req *http.Request)error{
+	code := req.FormValue("code")
 	token, err := googleOauthConfig.Exchange(oauth2.NoContext, code)
 	if err != nil {
-		fmt.Fprintf(w, "Code exchange failed with error %s\n", err.Error())
-		log.Fatal("Code exchange failed")
+		//fmt.Fprintf(w, "Code exchange failed with error %s\n", err.Error())
+		log.Fatal("Code exchange failed with error %s\n",err.Error())
 	}
 
 	if !token.Valid() {
-		fmt.Fprintln(w, "Retreived invalid token")
+		//fmt.Fprintln(w, "Retreived invalid token")
 		log.Fatal("Retreived invalid token")
 	}
 
-	fmt.Fprintln(w, token.AccessToken)
+	fmt.Fprintln(res, token.AccessToken)
 
 	response, err := http.Get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + token.AccessToken)
 	if err != nil {
@@ -39,6 +39,6 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request)error{
 		log.Fatal("Cannot unmarshal")
 	}
 
-	fmt.Fprintf(w, "Email: %s\nName: %s\nImage link: %s\n", user.Email, user.Name, user.Picture)
+	fmt.Fprintf(res, "Email: %s\nName: %s\nImage link: %s\n", user.Email, user.Name, user.Picture)
 return nil
 }

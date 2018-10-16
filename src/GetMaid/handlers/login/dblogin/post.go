@@ -27,7 +27,7 @@ func post(req *http.Request,res http.ResponseWriter){
 
 
 	db := database.GetDb()
-	
+
 
 	err = db.QueryRow("SELECT Name,Password FROM hirer WHERE Name=?", email).Scan(&databaseEmail, &databasePassword)
 
@@ -39,7 +39,7 @@ func post(req *http.Request,res http.ResponseWriter){
 	err = bcrypt.CompareHashAndPassword([]byte(databasePassword), []byte(password))
 
 	if req.Form.Get("Password") != databasePassword {
-		panic(PASSWORD)
+		panic("Incorrect password")
 	}
 
 	if err != nil {
