@@ -16,7 +16,7 @@ import (
 func main() {
 
 	defer database.CloseDb()
-	server.HandlePath("/", index.Handler)
+	server.HandlePath("/", index.Handler, jwt.VerifyJWT)
 	server.HandlePath("/signup", signup.Handler)
 	server.HandlePath("/login", local.Handler)
 	server.HandlePath("/verify", verifyphone.Handler, jwt.VerifyJWT)

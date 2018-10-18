@@ -19,7 +19,7 @@ func generateSecret(s []byte) (x string) {
 	return
 }
 
-func Send(res http.ResponseWriter, req *http.Request) {
+func Send(res http.ResponseWriter, req *http.Request) bool {
 
 	var err error
 	var databaseActive int
@@ -36,27 +36,29 @@ func Send(res http.ResponseWriter, req *http.Request) {
 		if err != nil {
 			fmt.Println(err)
 			panic(7)
-			return
 		}
 	} else {
 		err = db.QueryRow("SELECT Active FROM maid WHERE Phone=?", req.Header.Get("Phone")).Scan(&databaseActive)
 		if err != nil {
 			fmt.Println(err.Error())
 			panic(7)
-			return
 		}
 	}
 
-	otp := methods.GenerateOTP()
-	if !SendOTP(otp, req.Header.Get("Phone")) {
-		panic(7)
+	if databaseActive == 0 {
+		otp := methods.GenerateOTP()
+		if !SendOTP(otp, req.Header.Get("Phone")) {
+			panic(7)
+		}
+
+		temp, _ := bcrypt.GenerateFromPassword([]byte(otp), bcrypt.MinCost)
+
+		otp = string(temp)
+
+		success, err := json.Marshal(types.TokenUnverified{Success: true, Msg: req.Header.Get("Msg"), Secret: generateSecret(temp)})
+		methods.CheckErr(err)
+		methods.SendJSONResponse(res, success, 200)
+		return false
 	}
-
-	temp, _ := bcrypt.GenerateFromPassword([]byte(otp), bcrypt.MinCost)
-
-	otp = string(temp)
-
-	success, err := json.Marshal(types.TokenUnverified{Success: true, Msg: req.Header.Get("Msg"), Secret: generateSecret(temp)})
-	methods.CheckErr(err)
-	methods.SendJSONResponse(res, success, 200)
+	return true
 }
