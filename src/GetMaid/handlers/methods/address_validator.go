@@ -50,10 +50,11 @@ func init() {
 func IsPresent(pincode string, locality string) (check bool) {
 	var temp string
 	check = true
-	temp, check = validAddress[pincode]
+	temp, t := validAddress[pincode]
 
-	if check && temp == locality {
+	if t && (temp == locality) {
 		check = false
 	}
+
 	return
 }

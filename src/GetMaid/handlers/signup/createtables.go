@@ -39,6 +39,7 @@ func createTables(db *sql.DB) {
   Password varchar(1000) NOT NULL,
   PRIMARY KEY (Maid_id),
   Active int(1) NOT NULL,
+  UNIQUE KEY Email (Email),
   UNIQUE KEY Phone (Phone),
   CONSTRAINT fk_maid FOREIGN KEY(AddressId) REFERENCES address(id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
