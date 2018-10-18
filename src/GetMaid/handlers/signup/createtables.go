@@ -23,6 +23,7 @@ func createTables(db *sql.DB) {
   HouseNumber varchar(5) DEFAULT NULL,
   AddressId int(11) DEFAULT NULL,
   Password varchar(1000) NOT NULL,
+  Active int(1) NOT NULL,
   PRIMARY KEY (Hirer_id),
   UNIQUE KEY Email (Email),
   UNIQUE KEY Phone (Phone),
@@ -35,11 +36,9 @@ func createTables(db *sql.DB) {
   Email varchar(100) DEFAULT NULL,
   Phone varchar(10) DEFAULT NULL,
   AddressId int(11) DEFAULT NULL,
-
-
-
   Password varchar(1000) NOT NULL,
   PRIMARY KEY (Maid_id),
+  Active int(1) NOT NULL,
   UNIQUE KEY Phone (Phone),
   CONSTRAINT fk_maid FOREIGN KEY(AddressId) REFERENCES address(id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,

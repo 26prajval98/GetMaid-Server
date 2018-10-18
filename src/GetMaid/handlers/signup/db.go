@@ -26,11 +26,11 @@ func init() {
 	createTables(db)
 
 	//noinspection SqlResolve
-	maidInsert, e = db.Prepare(`INSERT INTO maid(Name, Email, Phone, AddressId, PASSWORD) VALUES ( ?, ?, ?, ?, ?)`)
+	maidInsert, e = db.Prepare(`INSERT INTO maid(Name, Email, Phone, AddressId, Password, Active) VALUES ( ?, ?, ?, ?, ?, 0)`)
 	methods.CheckErr(e)
 
 	//noinspection SqlResolve
-	hirerInsert, e = db.Prepare(`INSERT INTO hirer(Name, Email, Phone, HouseNumber, AddressId, PASSWORD) VALUES ( ?, ?, ?, ?, ?, ?)`)
+	hirerInsert, e = db.Prepare(`INSERT INTO hirer(Name, Email, Phone, HouseNumber, AddressId, Password, Active) VALUES ( ?, ?, ?, ?, ?, ?, 0)`)
 	methods.CheckErr(e)
 
 	//noinspection SqlResolve
