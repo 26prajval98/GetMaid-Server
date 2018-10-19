@@ -9,6 +9,7 @@ import (
 var DB *sql.DB
 
 func init() {
+	//db, err := sql.Open("mysql", "getmaid:mB79RWutLwFsS9v@tcp(db4free.net:3306)/getmaid")
 	db, err := sql.Open("mysql", "root@tcp(localhost:3306)/getmaid")
 
 	if err != nil {
