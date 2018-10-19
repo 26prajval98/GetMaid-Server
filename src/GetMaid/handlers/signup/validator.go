@@ -2,6 +2,7 @@ package signup
 
 import (
 	"GetMaid/handlers/methods"
+	"fmt"
 	"regexp"
 )
 
@@ -17,9 +18,10 @@ func validateSignup(x interface{}) {
 		}
 		if len(t.Name) == 0 {
 			panic(NAME)
-		} else if check, err = regexp.MatchString(`([1-9][0-9]+)`, t.Phone); len(t.Phone) != 10 && !check {
+		} else if check, err = regexp.MatchString(`([1-9][0-9]+)`, t.Phone); len(t.Phone) != 10 || !check {
 			panic(PHONE)
 		} else if methods.IsPresent(t.Address.PinCode, t.Address.Locality) {
+			fmt.Println("asds")
 			panic(ADDRESS)
 		}
 	case Hirer:
@@ -27,7 +29,7 @@ func validateSignup(x interface{}) {
 			panic(EMAIL)
 		} else if len(t.Name) == 0 {
 			panic(NAME)
-		} else if check, err = regexp.MatchString(`([1-9][0-9]+)`, t.Phone); len(t.Phone) != 10 && !check {
+		} else if check, err = regexp.MatchString(`([1-9][0-9]+)`, t.Phone); len(t.Phone) != 10 || !check {
 			panic(PHONE)
 		} else if methods.IsPresent(t.Address.PinCode, t.Address.Locality) {
 			panic(ADDRESS)

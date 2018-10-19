@@ -4,7 +4,6 @@ import (
 	"GetMaid/handlers/methods"
 	"GetMaid/handlers/types"
 	"encoding/json"
-	"fmt"
 	"github.com/gbrlsnchs/jwt"
 	"net/http"
 	"strconv"
@@ -40,7 +39,7 @@ func VerifyJWT(res http.ResponseWriter, req *http.Request) (next bool) {
 	}
 
 	if err = hs256.Verify(payload, sig); err != nil {
-		fmt.Println(err.Error())
+		errorHandler(res, &next)
 		return
 	}
 
@@ -66,9 +65,11 @@ func VerifyJWT(res http.ResponseWriter, req *http.Request) (next bool) {
 	if jot.Maid {
 		req.Header.Add("Maid_id", strconv.Itoa(int(jot.ID)))
 		req.Header.Add("Phone", jot.Phone)
+		req.Header.Add("Maid", strconv.Itoa(1))
 	} else {
 		req.Header.Add("Hirer_id", strconv.Itoa(int(jot.ID)))
 		req.Header.Add("Phone", jot.Phone)
+		req.Header.Add("Maid", strconv.Itoa(0))
 	}
 
 	next = true

@@ -27,4 +27,7 @@ go get github.com/dchest/uniuri
 echo 7
 go get -u github.com/gbrlsnchs/jwt
 
+echo 8
+go get github.com/subosito/twilio
+
 echo "All dependencies set";
