@@ -1,6 +1,5 @@
 package methods
 
-var validAddress = make(map[string]string)
 var validPincode = make(map[string]string)
 
 var pincodes []string
@@ -10,7 +9,6 @@ func init() {
 
 
 	locality = []string{
-		"Basaveshwarnagar",
 		"A F station yelahanka",
 		"Adugodi",
 		"Agara",
@@ -52,7 +50,7 @@ func init() {
 		"Basavanagudi",
 		"Basavaraja Market",
 		"Basaveshwaranagar",
-		"Basaveswaranagar Ii stage",
+		"Basaveswaranagar II stage",
 		"Bellandur",
 		"Benson Town",
 		"Bestamaranahalli",
@@ -305,14 +303,9 @@ func init() {
 		"Yemalur",
 		"Yeshwanthpur Bazar",
 		"Yeswanthpura",
-
-
-
-
 	}
 
 	pincodes = []string{
-		"560079",
 		"560063",
 		"560030",
 		"560034",
@@ -607,12 +600,9 @@ func init() {
 		"560037",
 		"560022",
 		"560022",
-
 	}
 
-
-
-	gos := 5
+	gos := 1
 
 	proc := make(chan bool, gos)
 	allDone := make(chan bool)
@@ -620,8 +610,11 @@ func init() {
 	for i := 0; i < gos; i++ {
 		go func(n int) {
 			for j := n; j < len(locality); j += gos {
-				validAddress[pincodes[j]] = locality[j]
-				validPincode[locality[j]] = pincodes[j]
+				_, x := validPincode[locality[j]]
+
+				if !x {
+					validPincode[locality[j]] = pincodes[j]
+				}
 			}
 			proc <- true
 		}(i)
@@ -646,9 +639,9 @@ func init() {
 func IsPresent(pincode string, locality string) (check bool) {
 	var temp string
 	check = true
-	temp, t := validAddress[pincode]
+	temp, t := validPincode[locality]
 
-	if t && (temp == locality) {
+	if t && (temp == pincode) {
 		check = false
 	}
 
