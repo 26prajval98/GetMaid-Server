@@ -1,9 +1,26 @@
 package database
 
 import (
-	"GetMaid/handlers/methods"
 	"database/sql"
+	"log"
 )
+
+func checkErr(err error, str ...string) {
+
+	defer func() {
+		if r := recover(); r != nil {
+			log.Fatal(r)
+		}
+	}()
+
+	if err != nil {
+		if len(str) == 0 {
+			panic(err)
+		} else {
+			panic(str[0])
+		}
+	}
+}
 
 func createTables(db *sql.DB) {
 	tables := []string{
@@ -61,7 +78,7 @@ func createTables(db *sql.DB) {
 				_, err := db.Exec(tables[j])
 
 				if err != nil {
-					methods.CheckErr(err, err.Error())
+					checkErr(err, err.Error())
 				}
 			}
 			proc <- true
