@@ -46,7 +46,6 @@ func FindDis(body []byte)(Dis){
 }
 // func main(){
 func init(){
-//func main(){
 	pincodes = []string{
 		"560079",
 		"560063",
