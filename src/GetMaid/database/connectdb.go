@@ -16,8 +16,11 @@ func init() {
 		log.Fatal("Database Not Connected")
 	}
 
+	createTables(DB)
+
 	DB = db
 }
+
 func GetDb() *sql.DB {
 	return DB
 }
