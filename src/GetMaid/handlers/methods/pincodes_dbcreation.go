@@ -1,5 +1,4 @@
 package methods
-//package main
 
 import (
 	"GetMaid/database"
@@ -9,18 +8,15 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"time"
 )
 
-
-
-type Dis struct {
-	Dis float64 `json:"distance"`
+type Distance struct {
+	Distance float64 `json:"distance"`
 }
+
 var (
-	pincodeinsert  *sql.Stmt
-	//pincodes []string
-	UqPc []string
+	pincodeinsert *sql.Stmt
+	UqPc          []string
 )
 
 func UniquePincodes(pincodes []string) []string {
@@ -35,17 +31,16 @@ func UniquePincodes(pincodes []string) []string {
 	return UqPc
 }
 
-func FindDis(body []byte)(Dis){
-	var s Dis
-	err:= json.Unmarshal([]byte(body), &s)
-	if err != nil{
-		fmt.Println("Error!!", err)
-		log.Fatal("maps API Get error")
+func FindDis(body []byte) Distance {
+	var s Distance
+	err := json.Unmarshal([]byte(body), &s)
+	if err != nil {
+		fmt.Println(err.Error())
 	}
 	return s
 }
-// func main(){
-func init(){
+
+func init() {
 	pincodes = []string{
 		"560079",
 		"560063",
@@ -342,57 +337,41 @@ func init(){
 		"560037",
 		"560022",
 		"560022",
-
 	}
+
 	Uniquepins := UniquePincodes(pincodes)
-	start:=time.Now()
-	fmt.Println("start time=",start)
+
 	var e error
 	db := database.GetDb()
+
+	//noinspection SqlResolve
 	pincodeinsert, e = db.Prepare(`INSERT INTO pincodes(Pincode1,Pincode2) VALUES ( ?, ?)`)
-	//CheckErr(e)
 
-	for i,p1:=range Uniquepins{
-		for j,p2:=range Uniquepins{
-			if i!=j{
-				w,err:=http.Get("https://getmaid-maps.herokuapp.com/distance/"+p1+"/"+p2)
+	for i, p1 := range Uniquepins {
+		for j, p2 := range Uniquepins {
+			if i != j {
+				w, err := http.Get("https://getmaid-maps.herokuapp.com/distance/" + p1 + "/" + p2)
 
-				if err!=nil{
+				if err != nil {
 					log.Fatal("Cannot get longitude and latitude for given pincode")
 				}
 
 				responseData, err := ioutil.ReadAll(w.Body)
+
 				if err != nil {
 					panic(err.Error())
 				}
-				s:=FindDis(responseData)
+				s := FindDis(responseData)
 
-				//fmt.Println(s.Dis)
-				temp:=s.Dis
-				if temp<3 {
-					_, e=pincodeinsert.Exec(p1,p2)
+				temp := s.Distance
+				if temp < 3 {
+					_, e = pincodeinsert.Exec(p1, p2)
 
 				}
-				if e!= nil {
+				if e != nil {
 					panic(e.Error())
-				}else{
-					fmt.Println("successfully inserted ",p1,p2)
-					//log.Info(successfully inserted p1,p2)
 				}
-
-
-
-				}
-
+			}
 		}
 	}
-
-	end:=time.Now()
-	fmt.Println("end time=",start)
-	fmt.Println("Time taken =",end.Sub(start))
-
-
 }
-
-
-

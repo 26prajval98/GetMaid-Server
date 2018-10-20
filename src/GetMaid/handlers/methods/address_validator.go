@@ -8,7 +8,6 @@ var locality []string
 
 func init() {
 
-
 	locality = []string{
 		"Basaveshwarnagar",
 		"A F station yelahanka",
@@ -305,10 +304,6 @@ func init() {
 		"Yemalur",
 		"Yeshwanthpur Bazar",
 		"Yeswanthpura",
-
-
-
-
 	}
 
 	pincodes = []string{
@@ -607,12 +602,9 @@ func init() {
 		"560037",
 		"560022",
 		"560022",
-
 	}
 
-
-
-	gos := 5
+	gos := 1
 
 	proc := make(chan bool, gos)
 	allDone := make(chan bool)
