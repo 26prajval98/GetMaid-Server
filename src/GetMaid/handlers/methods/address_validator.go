@@ -8,25 +8,6 @@ var locality []string
 
 func init() {
 
-	//pincodes = []string{
-	//	"560079",
-	//	"560010",
-	//	"560079",
-	//	"560079",
-	//	"560091",
-	//	"560040",
-	//	"560072",
-	//}
-	//
-	//locality = []string{
-	//	"Basaveshwaranagar",
-	//	"Rajajinagar",
-	//	"Kamakshipalya",
-	//	"Vinayaka nagar",
-	//	"Kottige palya",
-	//	"Vijaynagar",
-	//	"Nagarbhavi",
-	//}
 
 	locality = []string{
 		"Basaveshwarnagar",
@@ -214,7 +195,6 @@ func init() {
 		"Marathahalli Colony",
 		"Marsur",
 		"Maruthi Sevanagar",
-
 		"Mathikere",
 		"Mavalli",
 		"Mayasandra",

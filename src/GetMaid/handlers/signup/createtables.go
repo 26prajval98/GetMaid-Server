@@ -43,6 +43,11 @@ func createTables(db *sql.DB) {
   UNIQUE KEY Phone (Phone),
   CONSTRAINT fk_maid FOREIGN KEY(AddressId) REFERENCES address(id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
+
+		`CREATE TABLE IF NOT EXISTS pincodes(
+	Pincode1 varchar(15) NOT NULL,
+	Pincode2 varchar(15) NOT NULL
+	)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 	}
 
 	gos := 5
