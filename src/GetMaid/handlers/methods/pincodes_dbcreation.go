@@ -6,9 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"sync"
 )
 
 type Distance struct {
@@ -345,42 +343,57 @@ func initA() {
 	var e error
 	db := database.GetDb()
 
+	var n, x int
+
+	n = 0
+
+	b := make(chan int)
+
 	//noinspection SqlResolve
 	pincodeinsert, e = db.Prepare(`INSERT INTO pincodes(Pincode1,Pincode2) VALUES ( ?, ?)`)
 
-	var wgUp sync.WaitGroup
-
-	wgUp.Add(len(Uniquepins) * len(Uniquepins))
 	for i, p1 := range Uniquepins {
 		go func(n int, pin string) {
-			for j, p2 := range Uniquepins {
-				go func(n, n_ int, pin, pin_ string) {
-					w, err := http.Get("https://getmaid-maps.herokuapp.com/distance/" + pin + "/" + pin_)
 
-					if err != nil {
-						log.Fatal("Cannot get longitude and latitude for given pincode", pin, pin_)
-					}
+			defer func() {
+				b <- 1
+			}()
 
-					responseData, err := ioutil.ReadAll(w.Body)
+			for j := n + 1; j < len(Uniquepins); j++ {
+				p2 := Uniquepins[j]
+				w, err := http.Get("http://localhost:8000/distance/" + pin + "/" + p2)
 
-					if err != nil {
-						panic(err.Error())
-					}
-					s := FindDis(responseData)
+				if err != nil {
+					fmt.Println("Cannot get longitude and latitude for given pincode", pin, p2)
+				}
 
-					temp := s.Distance
-					if temp < 3 {
-						_, e = pincodeinsert.Exec(pin, pin_)
-					}
-					if e != nil {
-						panic(e.Error())
-					}
-					fmt.Println(n, n_)
-					wgUp.Done()
-				}(n, j, pin, p2)
+				responseData, err := ioutil.ReadAll(w.Body)
+
+				if err != nil {
+					panic(err.Error())
+				}
+				s := FindDis(responseData)
+
+				temp := s.Distance
+				if temp < 3 {
+					_, e = pincodeinsert.Exec(pin, p2)
+				}
+				if e != nil {
+					panic(e.Error())
+				}
 			}
 		}(i, p1)
 	}
 
-	wgUp.Wait()
+	for {
+		select {
+		case x = <-b:
+			n += x
+			if n == len(Uniquepins) {
+				return
+			}
+		}
+	}
+
+	fmt.Println("Done")
 }

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"log"
+	"os"
+	"strconv"
 )
 
 var DB *sql.DB
@@ -14,8 +16,14 @@ func init() {
 	var x int
 	var err error
 
-	fmt.Println("DB OPTION (0 :  Local) and (1 : db4free) NOTE : DEFAULT IS LOCAL ")
-	fmt.Scanln(&x)
+	t, _ := strconv.Atoi(os.Args[1])
+
+	if t == 1 {
+		fmt.Println("DB OPTION (0 :  Local) and (1 : db4free) NOTE : DEFAULT IS LOCAL ")
+		fmt.Scanln(&x)
+	} else {
+		x = 0
+	}
 
 	if x != 1 {
 		DB, err = sql.Open("mysql", "root@tcp(localhost:3306)/getmaid")

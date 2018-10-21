@@ -1,20 +1,32 @@
 package methods
 
-import "sync"
+import (
+	"os"
+	"strconv"
+)
 
 var validPincode = make(map[string]string)
 
 var pincodes []string
 var locality []string
-var wg sync.WaitGroup
 
 func init() {
 
-	wg.Add(1)
-	go func() {
-		initA()
-		wg.Done()
-	}()
+	ch := make(chan bool)
+	var a, b bool
+
+	a, b = false, false
+
+	runPin, _ := strconv.Atoi(os.Args[2])
+
+	if runPin == 0 {
+		a = true
+	} else {
+		go func() {
+			initA()
+			ch <- true
+		}()
+	}
 
 	locality = []string{
 		"A F station yelahanka",
@@ -635,13 +647,22 @@ func init() {
 		allDone <- true
 	}()
 
-	for {
-		select {
-		case <-allDone:
-			break
+	func() {
+		for {
+			select {
+			case <-allDone:
+				b = true
+				if a && b {
+					return
+				}
+			case <-ch:
+				a = true
+				if a && b {
+					return
+				}
+			}
 		}
-	}
-	wg.Wait()
+	}()
 }
 
 func IsPresent(pincode string, locality string) (check bool) {

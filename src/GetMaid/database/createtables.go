@@ -63,7 +63,8 @@ func createTables(db *sql.DB) {
 
 		`CREATE TABLE IF NOT EXISTS pincodes(
   Pincode1 varchar(15) NOT NULL,
-  Pincode2 varchar(15) NOT NULL
+  Pincode2 varchar(15) NOT NULL,
+  UNIQUE(Pincode1, Pincode2)
 )ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 	}
 
