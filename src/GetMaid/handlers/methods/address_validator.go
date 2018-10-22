@@ -1,11 +1,21 @@
 package methods
 
+import "sync"
+
 var validPincode = make(map[string]string)
 
 var pincodes []string
 var locality []string
+var wg sync.WaitGroup
 
 func init() {
+
+
+	wg.Add(1)
+	go func() {
+		initA()
+		wg.Done()
+	}()
 
 
 	locality = []string{
@@ -630,10 +640,10 @@ func init() {
 	for {
 		select {
 		case <-allDone:
-			return
+			break
 		}
 	}
-
+	wg.Wait()
 }
 
 func IsPresent(pincode string, locality string) (check bool) {

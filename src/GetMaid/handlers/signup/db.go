@@ -23,8 +23,6 @@ func init() {
 	var e error
 	db := database.GetDb()
 
-	createTables(db)
-
 	//noinspection SqlResolve
 	maidInsert, e = db.Prepare(`INSERT INTO maid(Name, Email, Phone, AddressId, Password, Active) VALUES ( ?, ?, ?, ?, ?, 0)`)
 	methods.CheckErr(e)

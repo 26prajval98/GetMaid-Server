@@ -1,9 +1,26 @@
-package signup
+package database
 
 import (
-	"GetMaid/handlers/methods"
 	"database/sql"
+	"log"
 )
+
+func checkErr(err error, str ...string) {
+
+	defer func() {
+		if r := recover(); r != nil {
+			log.Fatal(r)
+		}
+	}()
+
+	if err != nil {
+		if len(str) == 0 {
+			panic(err)
+		} else {
+			panic(str[0])
+		}
+	}
+}
 
 func createTables(db *sql.DB) {
 	tables := []string{
@@ -45,9 +62,9 @@ func createTables(db *sql.DB) {
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 
 		`CREATE TABLE IF NOT EXISTS pincodes(
-	Pincode1 varchar(15) NOT NULL,
-	Pincode2 varchar(15) NOT NULL
-	)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
+  Pincode1 varchar(15) NOT NULL,
+  Pincode2 varchar(15) NOT NULL
+)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 	}
 
 	gos := 5
@@ -61,7 +78,7 @@ func createTables(db *sql.DB) {
 				_, err := db.Exec(tables[j])
 
 				if err != nil {
-					methods.CheckErr(err, err.Error())
+					checkErr(err, err.Error())
 				}
 			}
 			proc <- true

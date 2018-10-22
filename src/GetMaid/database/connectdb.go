@@ -11,8 +11,6 @@ var DB *sql.DB
 
 func init() {
 
-
-
 	var x int
 	var err error
 
@@ -24,11 +22,11 @@ func init() {
 	} else {
 		DB, err = sql.Open("mysql", "getmaid:mB79RWutLwFsS9v@tcp(db4free.net:3306)/getmaid")
 	}
-
-
 	if err != nil {
 		log.Fatal("Database Not Connected")
 	}
+
+	createTables(DB)
 }
 
 func GetDb() *sql.DB {
