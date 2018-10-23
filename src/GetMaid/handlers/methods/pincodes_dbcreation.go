@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sync"
 )
 
 type Distance struct {
@@ -347,50 +348,17 @@ func initA() {
 	//noinspection SqlResolve
 	pincodeinsert, e = db.Prepare(`INSERT INTO pincodes(Pincode1,Pincode2) VALUES ( ?, ?)`)
 
-	//var wgUp sync.WaitGroup
-	//
-	//wgUp.Add(len(Uniquepins) * len(Uniquepins))
-	//for i, p1 := range Uniquepins {
-	//	go func(n int, pin string) {
-	//		for j, p2 := range Uniquepins {
-	//			go func(n, n_ int, pin, pin_ string) {
-	//				w, err := http.Get("https://getmaid-maps.herokuapp.com/distance/" + pin + "/" + pin_)
-	//
-	//				if err != nil {
-	//					log.Fatal("Cannot get longitude and latitude for given pincodes  ", pin," ", pin_)
-	//				}
-	//
-	//				responseData, err := ioutil.ReadAll(w.Body)
-	//
-	//				if err != nil {
-	//					panic(err.Error())
-	//				}
-	//				s := FindDis(responseData)
-	//
-	//				temp := s.Distance
-	//				if temp < 3 {
-	//					_, e = pincodeinsert.Exec(pin, pin_)
-	//				}
-	//				if e != nil {
-	//					panic(e.Error())
-	//				}
-	//				fmt.Println(n, n_)
-	//				wgUp.Done()
-	//			}(n, j, pin, p2)
-	//		}
-	//	}(i, p1)
-	//}
-	//
-	//wgUp.Wait()
+	var wgUp sync.WaitGroup
 
+	wgUp.Add(len(Uniquepins) * len(Uniquepins))
 	for i, p1 := range Uniquepins {
-			for j, p2 := range Uniquepins{
-				if i!=j {
-					w, err := http.Get("https://getmaid-maps.herokuapp.com/distance/" + p1 + "/" + p2)
+		go func(n int, pin string) {
+			for j, p2 := range Uniquepins {
+				go func(n, n_ int, pin, pin_ string) {
+					w, err := http.Get("https://getmaid-maps.herokuapp.com/distance/" + pin + "/" + pin_)
 
 					if err != nil {
-						log.Fatal("Cannot get longitude and latitude for given pincodes  ", p1, " ", p2)
-						//log.Fatal(err.Error())
+						log.Fatal("Cannot get longitude and latitude for given pincodes  ", pin," ", pin_)
 					}
 
 					responseData, err := ioutil.ReadAll(w.Body)
@@ -402,16 +370,21 @@ func initA() {
 
 					temp := s.Distance
 					if temp < 3 {
-						_, e = pincodeinsert.Exec(p1, p2)
-						log.Println("inserted")
+						_, e = pincodeinsert.Exec(pin, pin_)
 					}
 					if e != nil {
 						panic(e.Error())
 					}
-				}
-
-				}
+					fmt.Println(n, n_)
+					wgUp.Done()
+				}(n, j, pin, p2)
 			}
+		}(i, p1)
+	}
+
+	wgUp.Wait()
+
+
 
 
 
