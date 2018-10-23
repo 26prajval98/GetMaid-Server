@@ -12,22 +12,6 @@ var locality []string
 
 func init() {
 
-	ch := make(chan bool)
-	var a, b bool
-
-	a, b = false, false
-
-	runPin, _ := strconv.Atoi(os.Args[2])
-
-	if runPin == 0 {
-		a = true
-	} else {
-		go func() {
-			initA()
-			ch <- true
-		}()
-	}
-
 	locality = []string{
 		"A F station yelahanka",
 		"Adugodi",
@@ -620,6 +604,22 @@ func init() {
 		"560037",
 		"560022",
 		"560022",
+	}
+
+	ch := make(chan bool)
+	var a, b bool
+
+	a, b = false, false
+
+	runPin, _ := strconv.Atoi(os.Args[2])
+
+	if runPin == 0 {
+		a = true
+	} else {
+		go func() {
+			initA()
+			ch <- true
+		}()
 	}
 
 	gos := 1
