@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	accountSid = "ACbb0d964c185f8b35fc1c8b0b2eb4f78e"
-	authToken  = "8f6ad6c609ff10518212535538b50ddc"
-	phone      = "+18604075346"
+	accountSid = "AC1c044bc7f4f75c9731ddf1b3934cf969"
+	authToken  = "9a8e66793b7b95234248f02ab09a0fbd"
+	phone      = "+19794815817"
 )
 
 func client(toPhone string, msg string) error {

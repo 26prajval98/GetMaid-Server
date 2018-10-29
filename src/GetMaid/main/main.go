@@ -6,6 +6,8 @@ import (
 	"GetMaid/handlers/authentication/local"
 	"GetMaid/handlers/authentication/verifyphone"
 	"GetMaid/handlers/index"
+	"GetMaid/handlers/maidservices"
+	"GetMaid/handlers/middlewares"
 	"GetMaid/handlers/signup"
 	"GetMaid/server"
 	"fmt"
@@ -20,6 +22,7 @@ func main() {
 	server.HandlePath("/signup", signup.Handler)
 	server.HandlePath("/login", local.Handler)
 	server.HandlePath("/verify", verifyphone.Handler, jwt.VerifyJWT)
+	server.HandlePath("/maidservices", maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
 
 	fmt.Println("Server Started")
 	log.Fatal(http.ListenAndServe(":3000", nil))
