@@ -1,6 +1,6 @@
 ## Folder Structure
     .
-    ├── bin <br/>
+    ├── bin
     ├── pkg                    
     ├── src                     
         ├── GetMaid
