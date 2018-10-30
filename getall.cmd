@@ -9,25 +9,28 @@ go get golang.org/x/crypto/
 echo 1
 go get github.com/go-sql-driver/mysql
 
-echo 2
-go get github.com/qor/auth
+REM echo 2
+REM go get github.com/qor/auth
 
-echo 3
-go get golang.org/x/oauth2
+REM echo 3
+REM go get golang.org/x/oauth2
 
-echo 4
-go get cloud.google.com/go/compute/metadata
+REM echo 4
+REM go get cloud.google.com/go/compute/metadata
 
-echo 5
-go get golang.org/x/oauth2
+REM echo 5
+REM go get golang.org/x/oauth2
 
-echo 6
-go get github.com/dchest/uniuri
+REM echo 6
+REM go get github.com/dchest/uniuri
 
 echo 7
 go get -u github.com/gbrlsnchs/jwt
 
 echo 8
 go get github.com/subosito/twilio
+
+echo 9
+go get github.com/github.com/rs/cors
 
 echo "All dependencies set";

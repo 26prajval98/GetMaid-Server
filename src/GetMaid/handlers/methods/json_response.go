@@ -1,6 +1,8 @@
 package methods
 
-import "net/http"
+import (
+	"net/http"
+)
 
 func SendJSONResponse(res http.ResponseWriter, s []byte, code int) {
 	res.WriteHeader(code)

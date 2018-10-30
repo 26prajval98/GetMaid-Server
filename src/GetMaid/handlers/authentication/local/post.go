@@ -30,6 +30,8 @@ func post(req *http.Request, res http.ResponseWriter) {
 	var check bool
 	defer methods.ErrorHandler(res, &err)
 
+	req.ParseForm()
+
 	emailOrPhone := req.FormValue("EmailOrPhone")
 	password := req.FormValue("Password")
 	isMaid, _ := strconv.Atoi(req.FormValue("IsMaid"))

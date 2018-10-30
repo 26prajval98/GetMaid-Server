@@ -11,6 +11,7 @@ import (
 	"GetMaid/handlers/signup"
 	"GetMaid/server"
 	"fmt"
+	"github.com/rs/cors"
 	"log"
 	"net/http"
 )
@@ -18,12 +19,18 @@ import (
 func main() {
 
 	defer database.CloseDb()
-	server.HandlePath("/", index.Handler, jwt.VerifyJWT)
-	server.HandlePath("/signup", signup.Handler)
-	server.HandlePath("/login", local.Handler)
-	server.HandlePath("/verify", verifyphone.Handler, jwt.VerifyJWT)
-	server.HandlePath("/maidservices", maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
+
+	mux := http.NewServeMux()
+
+	server.HandlePath("/", mux, index.Handler, jwt.VerifyJWT)
+	server.HandlePath("/signup", mux, signup.Handler)
+	server.HandlePath("/login", mux, local.Handler, middlewares.EnableCors)
+	server.HandlePath("/verify", mux, verifyphone.Handler, jwt.VerifyJWT)
+	server.HandlePath("/maidservices", mux, maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
 
 	fmt.Println("Server Started")
-	log.Fatal(http.ListenAndServe(":3000", nil))
+
+	handler := cors.AllowAll().Handler(mux)
+
+	log.Fatal(http.ListenAndServe(":3000", handler))
 }

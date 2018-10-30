@@ -30,7 +30,7 @@ func ErrorHandler(res http.ResponseWriter, err *error, wg ...*sync.WaitGroup) {
 			msg = "internal server error"
 
 		default:
-			code = 400
+			code = 200
 			switch x := r.(type) {
 
 			case string:

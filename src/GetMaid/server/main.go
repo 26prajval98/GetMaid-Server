@@ -17,9 +17,8 @@ func errorHandler(err error, res http.ResponseWriter, info ...interface{}) bool 
 	return false
 }
 
-func HandlePath(path string, handler func(http.ResponseWriter, *http.Request) error, middlewares ...func(http.ResponseWriter, *http.Request) bool) {
-
-	http.HandleFunc(path, func(res http.ResponseWriter, req *http.Request) {
+func HandlePath(path string, mux *http.ServeMux, handler func(http.ResponseWriter, *http.Request) error, middlewares ...func(http.ResponseWriter, *http.Request) bool) {
+	mux.HandleFunc(path, func(res http.ResponseWriter, req *http.Request) {
 		startTime := time.Now()
 
 		var err error
