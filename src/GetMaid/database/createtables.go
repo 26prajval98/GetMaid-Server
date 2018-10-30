@@ -70,6 +70,7 @@ func createTables(db *sql.DB) {
   UNIQUE(Pincode1, Pincode2)
 )ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 
+
 		`CREATE TABLE IF NOT EXISTS maid_work_timings(
 	maid_id int(11) DEFAULT NULL,
 	day enum("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"),
@@ -85,6 +86,37 @@ func createTables(db *sql.DB) {
 )ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 
 
+
+		`CREATE TABLE IF NOT EXISTS services (
+  Service_id int(11) NOT NULL AUTO_INCREMENT,
+  Maid_id int(11) DEFAULT NULL,
+  Hirer_id int(11) DEFAULT NULL,
+  Service_name enum("Cleaning", "Baby Sitting", "Washing Clothes", "Washing Utensils", "Gardening"),
+  Done int(1) DEFAULT 0,
+  Date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  Slot int(2),
+  PRIMARY KEY(Service_id),
+  CONSTRAINT fk_services_maid FOREIGN KEY(Maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL,
+  CONSTRAINT fk_services_hirer FOREIGN KEY(Hirer_id) REFERENCES hirer(Hirer_id) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
+
+		`CREATE TABLE IF NOT EXISTS service_time (
+  Service_time_id int(11) NOT NULL AUTO_INCREMENT,
+  Maid_id int(11) DEFAULT NULL,
+  Slot int(2),
+  Done int(1) DEFAULT 0,
+  PRIMARY KEY(Service_time_id),
+  CONSTRAINT fk_servicetime_maid FOREIGN KEY(Maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
+
+		`CREATE TABLE IF NOT EXISTS maid_services (
+  Maid_services_id int(11) NOT NULL AUTO_INCREMENT,
+  Maid_id int(11) DEFAULT NULL,
+  Service_name enum("Cleaning", "Baby Sitting", "Washing Clothes", "Washing Utensils", "Gardening") DEFAULT "Cleaning" NOT NULL,
+  PRIMARY KEY(Maid_services_id),
+  UNIQUE(Maid_id, Service_name),
+  CONSTRAINT fk_maidservice_maid FOREIGN KEY(Maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 	}
 
 	gos := 5
