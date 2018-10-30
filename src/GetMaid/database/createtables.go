@@ -53,12 +53,15 @@ func createTables(db *sql.DB) {
   Email varchar(100) DEFAULT NULL,
   Phone varchar(10) DEFAULT NULL,
   AddressId int(11) DEFAULT NULL,
+  AccountId int(2) DEFAULT NULL,
   Password varchar(1000) NOT NULL,
   PRIMARY KEY (Maid_id),
   Active int(1) NOT NULL,
   UNIQUE KEY Email (Email),
   UNIQUE KEY Phone (Phone),
-  CONSTRAINT fk_maid FOREIGN KEY(AddressId) REFERENCES address(id) ON DELETE SET NULL
+  CONSTRAINT fk_maid FOREIGN KEY(AddressId) REFERENCES address(id) ON DELETE SET NULL,
+  CONSTRAINT fk_maid_ac FOREIGN KEY(AccountId) REFERENCES maid_card_details(acc_no) ON DELETE SET NULL
+
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 
 		`CREATE TABLE IF NOT EXISTS pincodes(
@@ -66,6 +69,23 @@ func createTables(db *sql.DB) {
   Pincode2 varchar(15) NOT NULL,
   UNIQUE(Pincode1, Pincode2)
 )ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
+
+
+		`CREATE TABLE IF NOT EXISTS maid_work_timings(
+	maid_id int(11) DEFAULT NULL,
+	day enum("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"),
+	work_timings enum("00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"),
+	CONSTRAINT fk_maid_info FOREIGN KEY(maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL
+)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
+
+		`CREATE TABLE IF NOT EXISTS maid_card_details(
+	maid_id int(11) DEFAULT NULL,
+	acc_no varchar(18) NOT NULL,
+	ifsc_code varchar(11) ,
+	CONSTRAINT fk_maid_card_details FOREIGN KEY(maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL
+)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
+
+
 
 		`CREATE TABLE IF NOT EXISTS services (
   Service_id int(11) NOT NULL AUTO_INCREMENT,
