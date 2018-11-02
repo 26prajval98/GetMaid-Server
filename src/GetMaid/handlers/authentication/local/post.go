@@ -11,11 +11,16 @@ import (
 	"net/http"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 const (
 	INVALIDLOGIN = 6
 )
+
+func setCookie( msg []byte, res *http.ResponseWriter){
+	http.SetCookie(*res, &http.Cookie{Name:"token", Value:string(msg), Expires:time.Now().Add(24 * time.Hour)})
+}
 
 func post(req *http.Request, res http.ResponseWriter) {
 
@@ -80,8 +85,11 @@ func post(req *http.Request, res http.ResponseWriter) {
 		panic(msg)
 	}
 
+	setCookie(msg, &res)
+
 	if databaseActive == 1 {
 		success, err := json.Marshal(types.Success{Success: true, Msg: string(msg)})
+		res.Header().Add("maid", strconv.Itoa(isMaid))
 		methods.CheckErr(err)
 		methods.SendJSONResponse(res, success, 200)
 	} else {
