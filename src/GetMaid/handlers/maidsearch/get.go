@@ -4,23 +4,27 @@ import (
 	"GetMaid/database"
 	"GetMaid/handlers/methods"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
+
 type maids struct {
-	Id int    `json:"id"`
+	Id int `json:"id"`
 }
 
-func search(req *http.Request,res http.ResponseWriter){
+func search(req *http.Request, res http.ResponseWriter) {
 	//var e error
 	db := database.GetDb()
 	maidsid := make([]maids, 0)
-	reqServices:=req.URL.Query()["services"]
-	hirerPincode:=req.URL.Query()["pincode"]
+	reqServices := req.URL.Query()["services"]
+	hirerPincode := req.URL.Query()["pincode"]
 	//fmt.Println(services,"\n",pincode)
-	for Sid:= range reqServices{
-		result, err := db.Query(`SELECT maid_id FROM maid_services,address,pincodes WHERE Service_name=? AND  Pincode1=? AND Pincode2=Pincode`,Sid,hirerPincode)
+	//SELECT DISTINCT s.Maid_id FROM maid s, maid_services x, address a, pincodes p WHERE s.AddressId=a.id AND ((a.Pincode=p.Pincode1 AND p.Pincode2="560025") or a.Pincode = "560025") AND x.Maid_id=s.Maid_id
+	for Sid := range reqServices {
+		result, err := db.Query(`SELECT DISTINCT s.Maid_id FROM maid s, maid_services x, address a, pincodes p WHERE s.AddressId=a.id AND a.Pincode=p.Pincode1 AND x.Maid_id=s.Maid_id`, Sid, hirerPincode)
 		if err != nil {
+			fmt.Println(result)
 			log.Fatal(err.Error())
 		}
 		for result.Next() {
@@ -38,8 +42,6 @@ func search(req *http.Request,res http.ResponseWriter){
 	jsonResp, _ := json.Marshal(maidsid)
 
 	methods.SendJSONResponse(res, jsonResp, 200)
-
-
 
 	//req.URL.Query()
 	//log.Println(req.URL.Query())
