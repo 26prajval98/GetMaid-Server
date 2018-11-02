@@ -9,6 +9,7 @@ import (
 	"GetMaid/handlers/maidservices"
 	"GetMaid/handlers/middlewares"
 	"GetMaid/handlers/signup"
+	"GetMaid/handlers/maidsearch"
 	"GetMaid/server"
 	"fmt"
 	"github.com/rs/cors"
@@ -27,6 +28,7 @@ func main() {
 	server.HandlePath("/login", mux, local.Handler, middlewares.EnableCors)
 	server.HandlePath("/verify", mux, verifyphone.Handler, jwt.VerifyJWT)
 	server.HandlePath("/maidservices", mux, maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
+	server.HandlePath("/maidsearch",mux,maidsearch.Handler,jwt.VerifyJWT)
 
 	fmt.Println("Server Started")
 

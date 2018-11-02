@@ -19,7 +19,6 @@ type serviceArray struct {
 func get(res http.ResponseWriter, msg string) {
 	var err error
 	defer methods.ErrorHandler(res, &err)
-
 	MaidId, _ := strconv.Atoi(msg)
 	b, s := getServices(MaidId)
 	if !b {
