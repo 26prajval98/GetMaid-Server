@@ -36,8 +36,8 @@ func search(req *http.Request, res http.ResponseWriter) {
 		log.Fatal(e.Error())
 	}
 	for Sid := range reqServices{
-		CountUpdate,e= db.Prepare(`UPDATE maid SET Count=? WHERE Maid_id=?`)
-		result, err := db.Query(`SELECT DISTINCT s.Maid_id,s.Count FROM maid s, maid_services x, address a, pincodes p WHERE x.Service_name=? AND s.AddressId=a.id AND ((a.Pincode=p.Pincode1 AND p.Pincode2=?) or a.Pincode = ?) AND x.Maid_id=s.Maid_id AND s.Active=1 AND s.Count<2`, Sid, hirerPincode, hirerPincode)
+		CountUpdate,e= db.Prepare(`UPDATE maid_online SET Count=? WHERE Id=?`)
+		result, err := db.Query(`SELECT DISTINCT o.Id,o.Count FROM maid s, maid_services x, address a, pincodes p,maid_online o WHERE x.Service_name=? AND s.AddressId=a.id AND ((a.Pincode=p.Pincode1 AND p.Pincode2=?) or a.Pincode = ?) AND x.Maid_id=s.Maid_id AND s.Maid_id=o.Id AND o.IsOnline=1 AND o.Count<2`, Sid, hirerPincode, hirerPincode)
 
 
 			log.Println(result)
