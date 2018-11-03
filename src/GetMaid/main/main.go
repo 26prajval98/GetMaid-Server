@@ -2,19 +2,21 @@ package main
 
 import (
 	"GetMaid/database"
+	"GetMaid/handlers/IsMaid"
 	"GetMaid/handlers/authentication/jwt"
 	"GetMaid/handlers/authentication/local"
 	"GetMaid/handlers/authentication/verifyphone"
 	"GetMaid/handlers/index"
+	"GetMaid/handlers/maidsearch"
 	"GetMaid/handlers/maidservices"
 	"GetMaid/handlers/middlewares"
 	"GetMaid/handlers/signup"
-	"GetMaid/handlers/maidsearch"
 	"GetMaid/server"
 	"fmt"
-	"github.com/rs/cors"
 	"log"
 	"net/http"
+
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -28,7 +30,8 @@ func main() {
 	server.HandlePath("/login", mux, local.Handler, middlewares.EnableCors)
 	server.HandlePath("/verify", mux, verifyphone.Handler, jwt.VerifyJWT)
 	server.HandlePath("/maidservices", mux, maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-	server.HandlePath("/maidsearch",mux,maidsearch.Handler,jwt.VerifyJWT)
+	server.HandlePath("/maidsearch", mux, maidsearch.Handler, jwt.VerifyJWT)
+	server.HandlePath("/ismaid", mux, IsMaid.Handler, jwt.VerifyJWT)
 
 	fmt.Println("Server Started")
 
