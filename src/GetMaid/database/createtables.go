@@ -56,7 +56,8 @@ func createTables(db *sql.DB) {
   AccountId int(2) DEFAULT NULL,
   Password varchar(1000) NOT NULL,
   PRIMARY KEY (Maid_id),
-  Active int(1) NOT NULL,
+  Active int(1) DEFAULT 0,
+  Count int(1) DEFAULT 0,
   UNIQUE KEY Email (Email),
   UNIQUE KEY Phone (Phone),
   CONSTRAINT fk_maid FOREIGN KEY(AddressId) REFERENCES address(id) ON DELETE SET NULL,
@@ -117,7 +118,10 @@ func createTables(db *sql.DB) {
   UNIQUE(Maid_id, Service_name),
   CONSTRAINT fk_maidservice_maid FOREIGN KEY(Maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
+
+
 	}
+
 
 	gos := 5
 
