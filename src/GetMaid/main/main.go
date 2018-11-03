@@ -2,11 +2,12 @@ package main
 
 import (
 	"GetMaid/database"
-	"GetMaid/handlers/IsMaid"
 	"GetMaid/handlers/authentication/jwt"
 	"GetMaid/handlers/authentication/local"
 	"GetMaid/handlers/authentication/verifyphone"
+	"GetMaid/handlers/getdetails"
 	"GetMaid/handlers/index"
+	"GetMaid/handlers/ismaid"
 	"GetMaid/handlers/maidservices"
 	"GetMaid/handlers/middlewares"
 	"GetMaid/handlers/signup"
@@ -28,7 +29,8 @@ func main() {
 	server.HandlePath("/login", mux, local.Handler, middlewares.EnableCors)
 	server.HandlePath("/verify", mux, verifyphone.Handler, jwt.VerifyJWT)
 	server.HandlePath("/maidservices", mux, maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-	server.HandlePath("/ismaid", mux, IsMaid.Handler, jwt.VerifyJWT)
+	server.HandlePath("/ismaid", mux, ismaid.Handler, jwt.VerifyJWT)
+	server.HandlePath("/details", mux, getdetails.Handler, jwt.VerifyJWT)
 
 	fmt.Println("Server Started")
 

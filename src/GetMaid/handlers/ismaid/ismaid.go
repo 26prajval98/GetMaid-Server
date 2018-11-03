@@ -1,4 +1,4 @@
-package IsMaid
+package ismaid
 
 import (
 	"GetMaid/handlers/methods"
@@ -8,16 +8,16 @@ import (
 	"strconv"
 )
 
-func Handler(res http.ResponseWriter, req *http.Request) error{
+func Handler(res http.ResponseWriter, req *http.Request) error {
 	_ = req
 
 	var maid string
 
-	ismaid, _ := strconv.Atoi(req.Header.Get("IsMaid"))
+	ismaid, _ := strconv.Atoi(req.Header.Get("Maid"))
 
 	if ismaid == 1 {
 		maid = "MAID"
-	}else{
+	} else {
 		maid = "HIRER"
 	}
 	success, _ := json.Marshal(types.Success{Success: true, Msg: maid})
