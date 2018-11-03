@@ -28,9 +28,13 @@ func main() {
 	server.HandlePath("/signup", mux, signup.Handler)
 	server.HandlePath("/login", mux, local.Handler, middlewares.EnableCors)
 	server.HandlePath("/verify", mux, verifyphone.Handler, jwt.VerifyJWT)
-	server.HandlePath("/maidservices", mux, maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-	server.HandlePath("/ismaid", mux, ismaid.Handler, jwt.VerifyJWT)
+
+	//Common
 	server.HandlePath("/details", mux, getdetails.Handler, jwt.VerifyJWT)
+	server.HandlePath("/ismaid", mux, ismaid.Handler, jwt.VerifyJWT)
+
+	// Maid Paths
+	server.HandlePath("/maidservices", mux, maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
 
 	fmt.Println("Server Started")
 
