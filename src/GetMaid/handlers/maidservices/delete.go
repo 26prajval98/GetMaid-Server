@@ -4,7 +4,6 @@ import (
 	"GetMaid/handlers/methods"
 	"GetMaid/handlers/types"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -15,7 +14,6 @@ func del(res http.ResponseWriter, MaidServiceIdS string) {
 
 	MaidServiceId, _ := strconv.Atoi(MaidServiceIdS)
 
-	fmt.Println(MaidServiceIdS)
 	b := deleteService(MaidServiceId)
 
 	if !b {
