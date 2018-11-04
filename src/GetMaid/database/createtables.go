@@ -70,7 +70,6 @@ func createTables(db *sql.DB) {
   UNIQUE(Pincode1, Pincode2)
 )ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 
-
 		`CREATE TABLE IF NOT EXISTS maid_work_timings(
 	maid_id int(11) DEFAULT NULL,
 	day enum("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"),
@@ -84,8 +83,6 @@ func createTables(db *sql.DB) {
 	ifsc_code varchar(11) ,
 	CONSTRAINT fk_maid_card_details FOREIGN KEY(maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL
 )ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
-
-
 
 		`CREATE TABLE IF NOT EXISTS services (
   Service_id int(11) NOT NULL AUTO_INCREMENT,
@@ -116,6 +113,14 @@ func createTables(db *sql.DB) {
   PRIMARY KEY(Maid_services_id),
   UNIQUE(Maid_id, Service_name),
   CONSTRAINT fk_maidservice_maid FOREIGN KEY(Maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
+
+		`CREATE TABLE IF NOT EXISTS maid_online (
+  id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  Maid_id int(11) DEFAULT NULL,
+  Works int(1) DEFAULT 0,
+  UNIQUE(Maid_id),
+  CONSTRAINT fk_maidonline_maid FOREIGN KEY(Maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 	}
 
