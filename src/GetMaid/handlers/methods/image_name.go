@@ -2,11 +2,10 @@ package methods
 
 import (
 	"GetMaid/database"
-	"GetMaid/handlers/authentication/jwt"
+	"database/sql"
 	"encoding/json"
 	"log"
 	"net/http"
-	"database/sql"
 )
 var Insert *sql.Stmt
 
@@ -15,8 +14,8 @@ type maid struct {
 	Name string `json:"name"`
 }
 func Handler(res http.ResponseWriter,req *http.Request)error{
-	jwt.VerifyJWT(res,req)
 	var e error
+	var v maid
 	defer ErrorHandler(res, &e)
 	db:=database.GetDb()
 	Insert,e:= db.Prepare(`INSERT INTO image_upload values (?,?)`)
@@ -30,17 +29,19 @@ func Handler(res http.ResponseWriter,req *http.Request)error{
 	if err!=nil{
 		log.Fatal(err.Error())
 	}
-
-	var name string
-	err = q.Scan(&name)
-	if err!=nil{
-		log.Fatal(err.Error())
+	for q.Next() {
+		var name string
+		err = q.Scan(&name)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+		v= maid{name}
+		Insert.Exec(maidid, name)
 	}
-	v:=maid{name}
-	Insert.Exec(maidid,name)
 	jsonResp, _ := json.Marshal(v)
 
 	SendJSONResponse(res, jsonResp, 200)
+	//jwt.VerifyJWT(res,req)
 
 	return e
 }
