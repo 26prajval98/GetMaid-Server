@@ -7,9 +7,9 @@ import (
 	"GetMaid/handlers/authentication/verifyphone"
 	"GetMaid/handlers/getdetails"
 	"GetMaid/handlers/index"
-	"GetMaid/handlers/maidsearch"
 	"GetMaid/handlers/ismaid"
 	"GetMaid/handlers/maidonline"
+	"GetMaid/handlers/maidsearch"
 	"GetMaid/handlers/maidservices"
 	"GetMaid/handlers/middlewares"
 	"GetMaid/handlers/signup"
@@ -38,12 +38,9 @@ func main() {
 
 	// Maid Paths
 	server.HandlePath("/maidservices", mux, maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-<<<<<<< HEAD
 	server.HandlePath("/maidsearch", mux, maidsearch.Handler, jwt.VerifyJWT)
 	server.HandlePath("/ismaid", mux, IsMaid.Handler, jwt.VerifyJWT)
-=======
 	server.HandlePath("/maidonline", mux, maidonline.Handler, jwt.VerifyJWT, middlewares.IsMaid)
->>>>>>> master
 
 	fmt.Println("Server Started")
 
