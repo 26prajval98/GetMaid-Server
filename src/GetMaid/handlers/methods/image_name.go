@@ -2,6 +2,7 @@ package methods
 
 import (
 	"GetMaid/database"
+	"GetMaid/handlers/authentication/jwt"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -14,6 +15,7 @@ type maid struct {
 	Name string `json:"name"`
 }
 func Handler(res http.ResponseWriter,req *http.Request)error{
+	jwt.VerifyJWT(res,req)
 	var e error
 	defer ErrorHandler(res, &e)
 	db:=database.GetDb()
