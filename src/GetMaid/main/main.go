@@ -2,12 +2,17 @@ package main
 
 import (
 	"GetMaid/database"
-	"GetMaid/handlers/IsMaid"
 	"GetMaid/handlers/authentication/jwt"
 	"GetMaid/handlers/authentication/local"
 	"GetMaid/handlers/authentication/verifyphone"
+	"GetMaid/handlers/getdetails"
 	"GetMaid/handlers/index"
+<<<<<<< HEAD
 	"GetMaid/handlers/maidsearch"
+=======
+	"GetMaid/handlers/ismaid"
+	"GetMaid/handlers/maidonline"
+>>>>>>> master
 	"GetMaid/handlers/maidservices"
 	"GetMaid/handlers/middlewares"
 	"GetMaid/handlers/signup"
@@ -29,9 +34,19 @@ func main() {
 	server.HandlePath("/signup", mux, signup.Handler)
 	server.HandlePath("/login", mux, local.Handler, middlewares.EnableCors)
 	server.HandlePath("/verify", mux, verifyphone.Handler, jwt.VerifyJWT)
+
+	//Common
+	server.HandlePath("/details", mux, getdetails.Handler, jwt.VerifyJWT)
+	server.HandlePath("/ismaid", mux, ismaid.Handler, jwt.VerifyJWT)
+
+	// Maid Paths
 	server.HandlePath("/maidservices", mux, maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
+<<<<<<< HEAD
 	server.HandlePath("/maidsearch", mux, maidsearch.Handler, jwt.VerifyJWT)
 	server.HandlePath("/ismaid", mux, IsMaid.Handler, jwt.VerifyJWT)
+=======
+	server.HandlePath("/maidonline", mux, maidonline.Handler, jwt.VerifyJWT, middlewares.IsMaid)
+>>>>>>> master
 
 	fmt.Println("Server Started")
 
