@@ -41,7 +41,6 @@ func Handler(res http.ResponseWriter,req *http.Request)error{
 	jsonResp, _ := json.Marshal(v)
 
 	SendJSONResponse(res, jsonResp, 200)
-	//jwt.VerifyJWT(res,req)
 
 	return e
 }
