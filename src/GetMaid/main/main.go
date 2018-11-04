@@ -6,6 +6,7 @@ import (
 	"GetMaid/handlers/authentication/jwt"
 	"GetMaid/handlers/authentication/local"
 	"GetMaid/handlers/authentication/verifyphone"
+	"GetMaid/handlers/methods"
 	"GetMaid/handlers/index"
 	"GetMaid/handlers/maidsearch"
 	"GetMaid/handlers/maidservices"
@@ -32,6 +33,7 @@ func main() {
 	server.HandlePath("/maidservices", mux, maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
 	server.HandlePath("/maidsearch", mux, maidsearch.Handler, jwt.VerifyJWT)
 	server.HandlePath("/ismaid", mux, IsMaid.Handler, jwt.VerifyJWT)
+	server.HandlePath("/getname",mux,methods.Handler,jwt.VerifyJWT)
 
 	fmt.Println("Server Started")
 

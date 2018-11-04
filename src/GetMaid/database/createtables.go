@@ -121,7 +121,12 @@ func createTables(db *sql.DB) {
 		`CREATE TABLE IF NOT EXISTS  maid_online(
   Id int(11) NOT NULL,
   Count int(1) DEFAULT 0,
-  IsOnline int(1) DEFAULT 0)`,
+  IsOnline int(1) DEFAULT 0)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
+
+		`CREATE TABLE IF NOT EXISTS image_upload(
+  Id int(11) DEFAULT NULL,
+  Name varchar(100) NOT NULL 
+)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1; `,
 
 	}
 
