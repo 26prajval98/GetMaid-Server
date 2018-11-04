@@ -3,6 +3,7 @@ package maidsearch
 import (
 	"GetMaid/database"
 	"GetMaid/handlers/methods"
+	"GetMaid/handlers/types"
 	"database/sql"
 	"encoding/json"
 	"log"
@@ -48,6 +49,8 @@ func search(req *http.Request, res http.ResponseWriter) {
 		ct int
 	)
 
+	id = -1
+
 	for result.Next() {
 		err := result.Scan(&id, &ct)
 		ct = ct + 1
@@ -61,10 +64,13 @@ func search(req *http.Request, res http.ResponseWriter) {
 
 	hirerId, _ := strconv.Atoi(req.Header.Get("Hirer_id"))
 
-	//noinspection SqlResolve
-	db.Exec("INSERT INTO services(Maid_id, Hirer_id, Service_name) VALUES (?, ?, ?)", id, hirerId, reqServices)
-
-	jsonResp, _ := json.Marshal(maidsid)
-
-	methods.SendJSONResponse(res, jsonResp, 200)
+	if id != -1 {
+		//noinspection SqlResolve
+		db.Exec("INSERT INTO services(Maid_id, Hirer_id, Service_name) VALUES (?, ?, ?)", id, hirerId, reqServices)
+		jsonResp, _ := json.Marshal(maidsid)
+		methods.SendJSONResponse(res, jsonResp, 200)
+	} else {
+		jsonResp, _ := json.Marshal(types.Success{Success: false, Msg: "No Maids Found Try Again Later"})
+		methods.SendJSONResponse(res, jsonResp, 200)
+	}
 }

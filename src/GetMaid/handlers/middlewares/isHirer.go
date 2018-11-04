@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-func isHirer(res http.ResponseWriter, req *http.Request) (next bool) {
+func IsHirer(res http.ResponseWriter, req *http.Request) (next bool) {
 	i, err := strconv.Atoi(req.Header.Get("Maid"))
 	if err != nil || i == 1 {
 		errorHandler(res, &next, "Not Hirer")

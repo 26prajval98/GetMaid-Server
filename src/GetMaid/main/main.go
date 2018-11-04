@@ -12,6 +12,7 @@ import (
 	"GetMaid/handlers/maidsearch"
 	"GetMaid/handlers/maidservices"
 	"GetMaid/handlers/middlewares"
+	"GetMaid/handlers/pending"
 	"GetMaid/handlers/signup"
 	"GetMaid/server"
 	"fmt"
@@ -38,9 +39,12 @@ func main() {
 
 	// Maid Paths
 	server.HandlePath("/maidservices", mux, maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-	server.HandlePath("/maidsearch", mux, maidsearch.Handler, jwt.VerifyJWT)
 	server.HandlePath("/maidonline", mux, maidonline.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-	
+	server.HandlePath("/pending", mux, pending.Handler, jwt.VerifyJWT, middlewares.IsMaid)
+
+	// Hirer Paths
+	server.HandlePath("/maidsearch", mux, maidsearch.Handler, jwt.VerifyJWT, middlewares.IsHirer)
+
 	fmt.Println("Server Started")
 
 	handler := cors.AllowAll().Handler(mux)

@@ -31,7 +31,6 @@ func HandlePath(path string, mux *http.ServeMux, handler func(http.ResponseWrite
 					return
 				}
 			}
-
 			err = handler(res, req)
 		}()
 

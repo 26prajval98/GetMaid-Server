@@ -39,7 +39,7 @@ func post(req *http.Request, res http.ResponseWriter) {
 
 	emailOrPhone := req.FormValue("EmailOrPhone")
 	password := req.FormValue("Password")
-	isMaid, _ := strconv.Atoi(req.FormValue("ismaid"))
+	isMaid, _ := strconv.Atoi(req.FormValue("IsMaid"))
 
 	db := database.GetDb()
 

@@ -18,8 +18,8 @@ func IsMaid(res http.ResponseWriter, req *http.Request) (next bool) {
 	i, err := strconv.Atoi(req.Header.Get("Maid"))
 	if err != nil || i == 0 {
 		errorHandler(res, &next, "Not Maid")
+	} else {
+		next = true
 	}
-
-	next = true
 	return
 }
