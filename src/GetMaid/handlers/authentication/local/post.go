@@ -18,8 +18,8 @@ const (
 	INVALIDLOGIN = 6
 )
 
-func setCookie( msg []byte, res *http.ResponseWriter){
-	http.SetCookie(*res, &http.Cookie{Name:"token", Value:string(msg), Expires:time.Now().Add(24 * time.Hour)})
+func setCookie(msg []byte, res *http.ResponseWriter) {
+	http.SetCookie(*res, &http.Cookie{Name: "token", Value: string(msg), Expires: time.Now().Add(24 * time.Hour)})
 }
 
 func post(req *http.Request, res http.ResponseWriter) {
@@ -39,7 +39,7 @@ func post(req *http.Request, res http.ResponseWriter) {
 
 	emailOrPhone := req.FormValue("EmailOrPhone")
 	password := req.FormValue("Password")
-	isMaid, _ := strconv.Atoi(req.FormValue("IsMaid"))
+	isMaid, _ := strconv.Atoi(req.FormValue("ismaid"))
 
 	db := database.GetDb()
 

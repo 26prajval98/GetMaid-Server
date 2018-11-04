@@ -38,8 +38,7 @@ func main() {
 
 	// Maid Paths
 	server.HandlePath("/maidservices", mux, maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-	server.HandlePath("/maidsearch", mux, maidsearch.Handler, jwt.VerifyJWT)
-	server.HandlePath("/ismaid", mux, IsMaid.Handler, jwt.VerifyJWT)
+	server.HandlePath("/maidsearch", mux, maidsearch.Handler)
 	server.HandlePath("/maidonline", mux, maidonline.Handler, jwt.VerifyJWT, middlewares.IsMaid)
 
 	fmt.Println("Server Started")

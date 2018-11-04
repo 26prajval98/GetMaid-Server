@@ -5,69 +5,58 @@ import (
 	"GetMaid/handlers/methods"
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 )
+
 var (
 	CountUpdate *sql.Stmt
-	)
-
-
+)
 
 type maids struct {
-	Id int `json:"id"`
+	Id      int    `json:"id"`
+	Service string `json:"service"`
 }
 
 func search(req *http.Request, res http.ResponseWriter) {
 	var e error
-	db := database.GetDb()
-	maidsid := make([]maids, 0)
-	q:=req.URL.Query()
+	var maidsid maids
 
-	//reqServices:=req.URL.Query()["services"]
+	db := database.GetDb()
+	q := req.URL.Query()
+
 	reqServices := q.Get("services")
 	hirerPincode := q.Get("pincode")
-	//isactive:=q.Get("isActive")
-
-	fmt.Println(reqServices,hirerPincode)
 
 	if e != nil {
 		log.Fatal(e.Error())
 	}
-	for Sid := range reqServices{
-		CountUpdate,e= db.Prepare(`UPDATE maid_online SET Count=? WHERE Id=?`)
-		result, err := db.Query(`SELECT DISTINCT o.Id,o.Count FROM maid s, maid_services x, address a, pincodes p,maid_online o WHERE x.Service_name=? AND s.AddressId=a.id AND ((a.Pincode=p.Pincode1 AND p.Pincode2=?) or a.Pincode = ?) AND x.Maid_id=s.Maid_id AND s.Maid_id=o.Id AND o.IsOnline=1 AND o.Count<2`, Sid, hirerPincode, hirerPincode)
 
+	//noinspection SqlResolve
+	CountUpdate, e = db.Prepare(`UPDATE maid_online SET Count=? WHERE Id=?`)
 
-			log.Println(result)
-			if err != nil {
-				fmt.Println(result)
-				log.Fatal(err.Error())
-			}
-			for result.Next() {
-				var( id int
-				ct int
-				)
-				err := result.Scan(&id,&ct)
-				ct=ct+1
-				CountUpdate.Exec(ct,id)
-				if err != nil {
-					log.Fatal(err.Error())
-				}
+	//noinspection SqlResolve
+	result, err := db.Query(`SELECT DISTINCT o.Maid_id, o.Count FROM maid s, maid_services x, address a, pincodes p, maid_online o WHERE x.Service_name=? AND s.AddressId=a.id AND ((a.Pincode=p.Pincode1 AND p.Pincode2=?) or a.Pincode = ?) AND x.Maid_id=s.Maid_id AND s.Maid_id=o.Maid_id AND o.Count<2 LIMIT  1`, reqServices, hirerPincode, hirerPincode)
 
-				maidsid = append(maidsid, maids{id})
-			}
-
-
+	if err != nil {
+		log.Fatal(err.Error())
 	}
+	for result.Next() {
+		var (
+			id int
+			ct int
+		)
+		err := result.Scan(&id, &ct)
+		ct = ct + 1
+		CountUpdate.Exec(ct, id)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+
+		maidsid = maids{id, reqServices}
+	}
+
 	jsonResp, _ := json.Marshal(maidsid)
 
 	methods.SendJSONResponse(res, jsonResp, 200)
-
-	//req.URL.Query()
-	//log.Println(req.URL.Query())
-	//success, err := json.Marshal(types.Success{Success: true, Msg: "Hello"})
-	//methods.CheckErr(err)
-	//methods.SendJSONResponse(res, success, 400)
 }

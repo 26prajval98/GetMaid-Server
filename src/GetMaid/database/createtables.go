@@ -118,7 +118,7 @@ func createTables(db *sql.DB) {
 		`CREATE TABLE IF NOT EXISTS maid_online (
   id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   Maid_id int(11) DEFAULT NULL,
-  Works int(1) DEFAULT 0,
+  Count int(1) DEFAULT 0,
   UNIQUE(Maid_id),
   CONSTRAINT fk_maidonline_maid FOREIGN KEY(Maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,

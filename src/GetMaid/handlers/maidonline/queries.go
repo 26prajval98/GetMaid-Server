@@ -19,7 +19,7 @@ func getAdd(req *http.Request) {
 
 	id, _ := strconv.Atoi(req.Header.Get("Maid_id"))
 
-	db.Exec("UPDATE maid_online SET Works = Works + 1 WHERE Maid_id=?", id)
+	db.Exec("UPDATE maid_online SET Count = Count + 1 WHERE Maid_id=?", id)
 }
 
 func del(req *http.Request) {
