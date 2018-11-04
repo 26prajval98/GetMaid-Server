@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 var (
@@ -41,11 +42,13 @@ func search(req *http.Request, res http.ResponseWriter) {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+
+	var (
+		id int
+		ct int
+	)
+
 	for result.Next() {
-		var (
-			id int
-			ct int
-		)
 		err := result.Scan(&id, &ct)
 		ct = ct + 1
 		CountUpdate.Exec(ct, id)
@@ -55,6 +58,11 @@ func search(req *http.Request, res http.ResponseWriter) {
 
 		maidsid = maids{id, reqServices}
 	}
+
+	hirerId, _ := strconv.Atoi(req.Header.Get("Hirer_id"))
+
+	//noinspection SqlResolve
+	db.Exec("INSERT INTO services(Maid_id, Hirer_id, Service_name) VALUES (?, ?, ?)", id, hirerId, reqServices)
 
 	jsonResp, _ := json.Marshal(maidsid)
 

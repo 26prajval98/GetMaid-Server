@@ -38,9 +38,9 @@ func main() {
 
 	// Maid Paths
 	server.HandlePath("/maidservices", mux, maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-	server.HandlePath("/maidsearch", mux, maidsearch.Handler)
+	server.HandlePath("/maidsearch", mux, maidsearch.Handler, jwt.VerifyJWT)
 	server.HandlePath("/maidonline", mux, maidonline.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-
+	
 	fmt.Println("Server Started")
 
 	handler := cors.AllowAll().Handler(mux)

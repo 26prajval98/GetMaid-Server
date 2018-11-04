@@ -70,14 +70,7 @@ func createTables(db *sql.DB) {
   UNIQUE(Pincode1, Pincode2)
 )ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 
-		`CREATE TABLE IF NOT EXISTS maid_work_timings(
-	maid_id int(11) DEFAULT NULL,
-	day enum("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"),
-	work_timings enum("00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00"),
-	CONSTRAINT fk_maid_info FOREIGN KEY(maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL
-)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
-
-		`CREATE TABLE IF NOT EXISTS maid_card_details(
+	`CREATE TABLE IF NOT EXISTS maid_card_details(
 	maid_id int(11) DEFAULT NULL,
 	acc_no varchar(18) NOT NULL,
 	ifsc_code varchar(11) ,
@@ -91,19 +84,9 @@ func createTables(db *sql.DB) {
   Service_name enum("Cleaning", "Baby Sitting", "Washing Clothes", "Washing Utensils", "Gardening"),
   Done int(1) DEFAULT 0,
   Date DATETIME DEFAULT CURRENT_TIMESTAMP,
-  Slot int(2),
   PRIMARY KEY(Service_id),
   CONSTRAINT fk_services_maid FOREIGN KEY(Maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL,
   CONSTRAINT fk_services_hirer FOREIGN KEY(Hirer_id) REFERENCES hirer(Hirer_id) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
-
-		`CREATE TABLE IF NOT EXISTS service_time (
-  Service_time_id int(11) NOT NULL AUTO_INCREMENT,
-  Maid_id int(11) DEFAULT NULL,
-  Slot int(2),
-  Done int(1) DEFAULT 0,
-  PRIMARY KEY(Service_time_id),
-  CONSTRAINT fk_servicetime_maid FOREIGN KEY(Maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 
 		`CREATE TABLE IF NOT EXISTS maid_services (
@@ -122,6 +105,7 @@ func createTables(db *sql.DB) {
   UNIQUE(Maid_id),
   CONSTRAINT fk_maidonline_maid FOREIGN KEY(Maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
+
 	}
 
 	gos := 5
