@@ -7,12 +7,9 @@ import (
 	"GetMaid/handlers/authentication/verifyphone"
 	"GetMaid/handlers/getdetails"
 	"GetMaid/handlers/index"
-<<<<<<< HEAD
 	"GetMaid/handlers/maidsearch"
-=======
 	"GetMaid/handlers/ismaid"
 	"GetMaid/handlers/maidonline"
->>>>>>> master
 	"GetMaid/handlers/maidservices"
 	"GetMaid/handlers/middlewares"
 	"GetMaid/handlers/signup"
