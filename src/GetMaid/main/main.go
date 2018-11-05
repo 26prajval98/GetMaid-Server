@@ -6,6 +6,7 @@ import (
 	"GetMaid/handlers/authentication/jwt"
 	"GetMaid/handlers/authentication/local"
 	"GetMaid/handlers/authentication/verifyphone"
+	"GetMaid/handlers/done"
 	"GetMaid/handlers/earnings"
 	"GetMaid/handlers/getdetails"
 	"GetMaid/handlers/index"
@@ -48,6 +49,7 @@ func main() {
 
 	// Hirer Paths
 	server.HandlePath("/maidsearch", mux, maidsearch.Handler, jwt.VerifyJWT, middlewares.IsHirer)
+	server.HandlePath("/done", mux, done.Handler, jwt.VerifyJWT, middlewares.IsHirer)
 
 	fmt.Println("Server Started")
 
