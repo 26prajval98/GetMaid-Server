@@ -155,7 +155,6 @@ func insertHirer(user Hirer) d {
 		}
 		_, er = hirerInsert.Exec(user.Name, user.Email, user.Phone, user.HouseNo, id, user.Password)
 		if er != nil {
-
 			addressDelete.Exec(id)
 
 			done <- d{true, errors.New("email / phone already exists")}
