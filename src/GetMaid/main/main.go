@@ -2,6 +2,7 @@ package main
 
 import (
 	"GetMaid/database"
+	"GetMaid/handlers/all"
 	"GetMaid/handlers/authentication/jwt"
 	"GetMaid/handlers/authentication/local"
 	"GetMaid/handlers/authentication/verifyphone"
@@ -37,11 +38,12 @@ func main() {
 	//Common
 	server.HandlePath("/details", mux, getdetails.Handler, jwt.VerifyJWT)
 	server.HandlePath("/ismaid", mux, ismaid.Handler, jwt.VerifyJWT)
+	server.HandlePath("/pending", mux, pending.Handler, jwt.VerifyJWT)
+	server.HandlePath("/all", mux, all.Handler, jwt.VerifyJWT)
 
 	// Maid Paths
 	server.HandlePath("/maidservices", mux, maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
 	server.HandlePath("/maidonline", mux, maidonline.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-	server.HandlePath("/pending", mux, pending.Handler, jwt.VerifyJWT, middlewares.IsMaid)
 	server.HandlePath("/earnings", mux, earnings.Handler, jwt.VerifyJWT, middlewares.IsMaid)
 
 	// Hirer Paths

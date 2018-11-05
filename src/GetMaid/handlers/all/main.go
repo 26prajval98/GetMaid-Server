@@ -1,4 +1,4 @@
-package pendingall
+package all
 
 import (
 	"GetMaid/database"
@@ -9,10 +9,10 @@ import (
 )
 
 type hirerPending struct {
-	Sid string `json:"sid"`
-	Name string `json:"Name"`
+	Sid   string `json:"sid"`
+	Name  string `json:"Name"`
 	Phone string `json:"Phone"`
-	Work string `json:"work"`
+	Work  string `json:"work"`
 }
 
 func Handler(res http.ResponseWriter, req *http.Request) error {
@@ -22,10 +22,9 @@ func Handler(res http.ResponseWriter, req *http.Request) error {
 
 	var (
 		hId   string
-		mId string
+		mId   string
 		sname string
 	)
-
 
 	p := make([]hirerPending, 0)
 
@@ -33,7 +32,7 @@ func Handler(res http.ResponseWriter, req *http.Request) error {
 
 	hId = req.Header.Get("Hirer_id")
 
-	rows, e := db.Query("SELECT Service_id, Maid_id, Service_name FROM services WHERE Hirer_id = ? AND Done=0", hId)
+	rows, e := db.Query("SELECT Service_id, Maid_id, Service_name FROM services WHERE Hirer_id = ?", hId)
 
 	if e != nil {
 		fmt.Println(e.Error())
@@ -44,10 +43,10 @@ func Handler(res http.ResponseWriter, req *http.Request) error {
 	)
 
 	for rows.Next() {
-		rows.Scan(&sId,&mId, &sname)
+		rows.Scan(&sId, &mId, &sname)
 		row := db.QueryRow("Select h.Name, h.Phone FROM maid h WHERE h.Maid_id=?", mId)
 		row.Scan(&Name, &Phone)
-		p = append(p, hirerPending{Sid : sId, Name:Name, Phone:Phone, Work:sname})
+		p = append(p, hirerPending{Sid: sId, Name: Name, Phone: Phone, Work: sname})
 	}
 
 	jp, _ := json.Marshal(p)

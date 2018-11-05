@@ -76,6 +76,8 @@ func Handler(res http.ResponseWriter, req *http.Request) error {
 	switch {
 	case methods.CheckCase("POST", "/verify", req):
 		post(res, req)
+	case methods.CheckCase("GET", "/verify", req):
+		Send(res, req)
 	default:
 		panic(404)
 	}

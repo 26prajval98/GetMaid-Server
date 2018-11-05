@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	accountSid = "AC1c044bc7f4f75c9731ddf1b3934cf969"
-	authToken  = "9a8e66793b7b95234248f02ab09a0fbd"
+	accountSid = "AC2eac4de556bc49880e8d56c230713c73"
+	authToken  = "6b2ad5c1f0da177c0730b7da4e342a04"
 	phone      = "+19794815817"
 )
 
@@ -33,7 +33,13 @@ func client(toPhone string, msg string) error {
 
 func SendOTP(otp, toPhone string) bool {
 	msg := "Your OTP for GetMaid is " + otp
-	err := client(toPhone, msg)
+	//err := client(toPhone, msg)
+
+	err := error(nil)
+
+	_ = client
+
+	fmt.Println(msg)
 
 	if err != nil {
 		return false

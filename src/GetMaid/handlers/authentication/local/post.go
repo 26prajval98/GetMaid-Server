@@ -7,6 +7,7 @@ import (
 	"GetMaid/handlers/methods"
 	"GetMaid/handlers/types"
 	"encoding/json"
+	"fmt"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"regexp"
@@ -84,6 +85,8 @@ func post(req *http.Request, res http.ResponseWriter) {
 	if err != nil {
 		panic(msg)
 	}
+
+	fmt.Println(databaseActive)
 
 	setCookie(msg, &res)
 
