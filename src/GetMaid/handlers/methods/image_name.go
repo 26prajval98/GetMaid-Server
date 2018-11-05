@@ -8,25 +8,24 @@ import (
 	"log"
 	"net/http"
 )
+
 var Insert *sql.Stmt
 
-type maid struct {
-
-	Name string `json:"name"`
-}
-func Handler(res http.ResponseWriter,req *http.Request)error{
+func Handler(res http.ResponseWriter, req *http.Request) error {
 	var e error
 	defer ErrorHandler(res, &e)
-	db:=database.GetDb()
-	Insert,e:= db.Prepare(`INSERT INTO image_upload values (?,?)`)
-	if e!=nil{
+	db := database.GetDb()
+
+	//noinspection SqlResolve
+	Insert, e := db.Prepare(`INSERT INTO image_upload values (?,?)`)
+	if e != nil {
 		log.Fatal(e.Error())
 	}
-	maidid:=req.Header.Get("Maid_id")
-	RandString:=randSeq(7)
+	maidid := req.Header.Get("Maid_id")
+	RandString := randSeq(7)
 	mid := sha256.Sum256([]byte(maidid))
-	m:= string(mid[:])
-	toret:=m+RandString
+	m := string(mid[:])
+	toret := m + RandString
 	Insert.Exec(maidid, toret)
 	jsonResp, _ := json.Marshal(toret)
 

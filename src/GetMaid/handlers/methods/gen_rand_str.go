@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-
 func init() {
 	rand.Seed(time.Now().UnixNano())
 }
@@ -21,5 +20,3 @@ func randSeq(n int) string {
 
 	return string(b)
 }
-
-
