@@ -2,6 +2,7 @@ package methods
 
 import (
 	"GetMaid/database"
+	"crypto/sha256"
 	"database/sql"
 	"encoding/json"
 	"log"
@@ -15,7 +16,6 @@ type maid struct {
 }
 func Handler(res http.ResponseWriter,req *http.Request)error{
 	var e error
-	var v maid
 	defer ErrorHandler(res, &e)
 	db:=database.GetDb()
 	Insert,e:= db.Prepare(`INSERT INTO image_upload values (?,?)`)
@@ -23,22 +23,12 @@ func Handler(res http.ResponseWriter,req *http.Request)error{
 		log.Fatal(e.Error())
 	}
 	maidid:=req.Header.Get("Maid_id")
-
-	//Instead of random string name of the maid is being returned
-	q,err:=db.Query(`SELECT m.Name from maid m WHERE m.Maid_id=?`,maidid)
-	if err!=nil{
-		log.Fatal(err.Error())
-	}
-	for q.Next() {
-		var name string
-		err = q.Scan(&name)
-		if err != nil {
-			log.Fatal(err.Error())
-		}
-		v= maid{name}
-		Insert.Exec(maidid, name)
-	}
-	jsonResp, _ := json.Marshal(v)
+	RandString:=randSeq(7)
+	mid := sha256.Sum256([]byte(maidid))
+	m:= string(mid[:])
+	toret:=m+RandString
+	Insert.Exec(maidid, toret)
+	jsonResp, _ := json.Marshal(toret)
 
 	SendJSONResponse(res, jsonResp, 200)
 
