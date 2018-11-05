@@ -70,7 +70,7 @@ func createTables(db *sql.DB) {
   UNIQUE(Pincode1, Pincode2)
 )ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 
-	`CREATE TABLE IF NOT EXISTS maid_card_details(
+		`CREATE TABLE IF NOT EXISTS maid_card_details(
 	maid_id int(11) DEFAULT NULL,
 	acc_no varchar(18) NOT NULL,
 	ifsc_code varchar(11) ,
@@ -106,6 +106,10 @@ func createTables(db *sql.DB) {
   CONSTRAINT fk_maidonline_maid FOREIGN KEY(Maid_id) REFERENCES maid(Maid_id) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;`,
 
+		`CREATE TABLE IF NOT EXISTS image_upload(
+  Id int(11) DEFAULT NULL,
+  Name varchar(100) NOT NULL 
+)ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1; `,
 	}
 
 	gos := 5
