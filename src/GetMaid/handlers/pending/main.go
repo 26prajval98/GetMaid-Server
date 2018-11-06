@@ -16,6 +16,7 @@ type pending struct {
 
 type hirerPending struct {
 	Sid   string `json:"sid"`
+	Mid   string `json:"mid"`
 	Name  string `json:"Name"`
 	Phone string `json:"Phone"`
 	Work  string `json:"work"`
@@ -80,7 +81,7 @@ func Handler(res http.ResponseWriter, req *http.Request) error {
 			rows.Scan(&sId, &mId, &sname)
 			row := db.QueryRow("Select h.Name, h.Phone FROM maid h WHERE h.Maid_id=?", mId)
 			row.Scan(&Name, &Phone)
-			p = append(p, hirerPending{Sid: sId, Name: Name, Phone: Phone, Work: sname})
+			p = append(p, hirerPending{Sid: sId, Mid: mId, Name: Name, Phone: Phone, Work: sname})
 		}
 
 		jp, _ := json.Marshal(p)

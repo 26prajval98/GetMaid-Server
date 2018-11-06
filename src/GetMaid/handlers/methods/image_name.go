@@ -2,14 +2,19 @@ package methods
 
 import (
 	"GetMaid/database"
-	"crypto/sha256"
 	"database/sql"
 	"encoding/json"
+	"fmt"
+	"golang.org/x/crypto/bcrypt"
 	"log"
 	"net/http"
 )
 
 var Insert *sql.Stmt
+
+type name struct {
+	Name string `json:"name"`
+}
 
 func Handler(res http.ResponseWriter, req *http.Request) error {
 	var e error
@@ -17,18 +22,21 @@ func Handler(res http.ResponseWriter, req *http.Request) error {
 	db := database.GetDb()
 
 	//noinspection SqlResolve
-	Insert, e := db.Prepare(`INSERT INTO image_upload values (?,?)`)
+	Insert, e := db.Prepare(`INSERT INTO image_upload  values (?,?)`)
 	if e != nil {
 		log.Fatal(e.Error())
 	}
+
 	maidid := req.Header.Get("Maid_id")
 	RandString := randSeq(7)
-	mid := sha256.Sum256([]byte(maidid))
-	m := string(mid[:])
-	toret := m + RandString
-	Insert.Exec(maidid, toret)
-	jsonResp, _ := json.Marshal(toret)
+	toret := maidid + RandString
+	hpw, e := bcrypt.GenerateFromPassword([]byte(toret), 6)
 
+	Insert.Exec(maidid, string(hpw))
+
+	fmt.Println(string(hpw))
+
+	jsonResp, _ := json.Marshal(name{Name: string(hpw)})
 	SendJSONResponse(res, jsonResp, 200)
 
 	return e

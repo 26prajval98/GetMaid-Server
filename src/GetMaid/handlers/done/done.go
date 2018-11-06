@@ -13,6 +13,8 @@ func Handler(res http.ResponseWriter, req *http.Request) error {
 
 	id := req.URL.Query().Get("id")
 
+	fmt.Println(req.URL.Query())
+
 	_, e := db.Exec("UPDATE services SET DONE = 1 WHERE Service_id=?", id)
 
 	fmt.Println(e)
