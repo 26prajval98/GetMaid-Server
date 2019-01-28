@@ -19,8 +19,8 @@ import (
 	"GetMaid/handlers/middlewares"
 	"GetMaid/handlers/pending"
 	"GetMaid/handlers/signup"
-	"GoCar"
 	"fmt"
+	"github.com/26prajval98/GoCar"
 	"github.com/rs/cors"
 )
 
@@ -28,31 +28,31 @@ func main() {
 
 	defer database.CloseDb()
 
-	GoCar.HandlePath("/", index.Handler, jwt.VerifyJWT)
-	GoCar.HandlePath("/signup", signup.Handler)
-	GoCar.HandlePath("/login", local.Handler, middlewares.EnableCors)
-	GoCar.HandlePath("/verify", verifyphone.Handler, jwt.VerifyJWT)
+	gocar.HandlePath("/", index.Handler, jwt.VerifyJWT)
+	gocar.HandlePath("/signup", signup.Handler)
+	gocar.HandlePath("/login", local.Handler, middlewares.EnableCors)
+	gocar.HandlePath("/verify", verifyphone.Handler, jwt.VerifyJWT)
 
 	//Common
-	GoCar.HandlePath("/details", getdetails.Handler, jwt.VerifyJWT)
-	GoCar.HandlePath("/ismaid", ismaid.Handler, jwt.VerifyJWT)
-	GoCar.HandlePath("/pending", pending.Handler, jwt.VerifyJWT)
-	GoCar.HandlePath("/all", all.Handler, jwt.VerifyJWT)
+	gocar.HandlePath("/details", getdetails.Handler, jwt.VerifyJWT)
+	gocar.HandlePath("/ismaid", ismaid.Handler, jwt.VerifyJWT)
+	gocar.HandlePath("/pending", pending.Handler, jwt.VerifyJWT)
+	gocar.HandlePath("/all", all.Handler, jwt.VerifyJWT)
 
 	// Maid Paths
-	GoCar.HandlePath("/maidservices", maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-	GoCar.HandlePath("/maidonline", maidonline.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-	GoCar.HandlePath("/earnings", earnings.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-	GoCar.HandlePath("/getname", methods.Handler, jwt.VerifyJWT, middlewares.IsMaid)
-	GoCar.HandlePath("/maidid", maidid.Handler, jwt.VerifyJWT, middlewares.IsMaid)
+	gocar.HandlePath("/maidservices", maidservices.Handler, jwt.VerifyJWT, middlewares.IsMaid)
+	gocar.HandlePath("/maidonline", maidonline.Handler, jwt.VerifyJWT, middlewares.IsMaid)
+	gocar.HandlePath("/earnings", earnings.Handler, jwt.VerifyJWT, middlewares.IsMaid)
+	gocar.HandlePath("/getname", methods.Handler, jwt.VerifyJWT, middlewares.IsMaid)
+	gocar.HandlePath("/maidid", maidid.Handler, jwt.VerifyJWT, middlewares.IsMaid)
 
 	// Hirer Paths
-	GoCar.HandlePath("/maidsearch", maidsearch.Handler, jwt.VerifyJWT, middlewares.IsHirer)
-	GoCar.HandlePath("/done", done.Handler, jwt.VerifyJWT, middlewares.IsHirer)
+	gocar.HandlePath("/maidsearch", maidsearch.Handler, jwt.VerifyJWT, middlewares.IsHirer)
+	gocar.HandlePath("/done", done.Handler, jwt.VerifyJWT, middlewares.IsHirer)
 
 	fmt.Println("Server Started")
 
-	GoCar.SetHandler(cors.AllowAll().Handler)
+	gocar.SetHandler(cors.AllowAll().Handler)
 
-	GoCar.StartServer(3000)
+	gocar.StartServer(3000)
 }
