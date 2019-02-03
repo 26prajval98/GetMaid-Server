@@ -32,7 +32,7 @@ func post(req *http.Request, res http.ResponseWriter) {
 		panic(PASSWORD)
 	}
 
-	if t, _ := strconv.Atoi(req.Form.Get("ismaid")); t == int(0) {
+	if t, _ := strconv.Atoi(req.Form.Get("IsMaid")); t == int(0) {
 		user := Hirer{
 			Email:    req.Form.Get("Email"),
 			Password: string(hpw),
